@@ -1,0 +1,1522 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portal O2SN SD - Senam</title>
+  <meta name="description" content="Portal pengumuman nilai O2SN SD Cabang Olahraga Senam - Perorangan Serba Bisa Putra dan Putri." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --paper:#ffffff;
+      --ink:#172033;
+      --muted:#69758c;
+      --line:#e7ebf3;
+      --primary:#3157f6;
+      --primary-2:#7b4dff;
+      --accent:#16b88e;
+      --warning:#ffb020;
+      --danger:#f04438;
+      --shadow:0 16px 40px rgba(23,32,51,.10);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:"Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(49,87,246,.16), transparent 32%),
+        radial-gradient(circle at top right, rgba(22,184,142,.13), transparent 30%),
+        var(--bg);
+      color:var(--ink);
+    }
+
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .app{
+      width:min(1180px, calc(100% - 28px));
+      margin:0 auto;
+      padding:20px 0 42px;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:30px;
+      padding:22px;
+      color:#fff;
+      background:
+        linear-gradient(135deg, rgba(19,32,76,.96), rgba(49,87,246,.94) 54%, rgba(22,184,142,.92)),
+        linear-gradient(45deg, #18214a, #3157f6);
+      box-shadow:var(--shadow);
+    }
+
+    .hero:before{
+      content:"";
+      position:absolute;
+      width:420px;
+      height:420px;
+      border-radius:999px;
+      right:-150px;
+      top:-180px;
+      background:rgba(255,255,255,.13);
+    }
+
+    .hero:after{
+      content:"";
+      position:absolute;
+      width:220px;
+      height:220px;
+      border-radius:999px;
+      left:42%;
+      bottom:-120px;
+      background:rgba(255,255,255,.10);
+    }
+
+    .hero-inner{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:18px;
+      align-items:center;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:max-content;
+      padding:8px 12px;
+      border-radius:999px;
+      color:#eaf0ff;
+      background:rgba(255,255,255,.13);
+      border:1px solid rgba(255,255,255,.24);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+
+    .hero h1{
+      margin:12px 0 8px;
+      font-size:clamp(24px, 4vw, 44px);
+      line-height:1.02;
+      letter-spacing:-.045em;
+    }
+
+    .hero p{
+      margin:0;
+      max-width:780px;
+      color:rgba(255,255,255,.82);
+      font-size:14px;
+      line-height:1.65;
+    }
+
+    .sync-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.22);
+      color:#eaf0ff;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.02em;
+    }
+    .sync-badge .dot{
+      width:7px;height:7px;border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 0 rgba(22,184,142,.55);
+      animation:pulse 2.4s infinite;
+    }
+    .sync-badge.offline .dot{background:#f04438;animation:none}
+    .sync-badge.syncing .dot{background:#ffb020;animation:pulse 1s infinite}
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(22,184,142,.55)}
+      70%{box-shadow:0 0 0 10px rgba(22,184,142,0)}
+      100%{box-shadow:0 0 0 0 rgba(22,184,142,0)}
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border:0;
+      border-radius:15px;
+      padding:11px 14px;
+      color:var(--ink);
+      background:#fff;
+      font-weight:800;
+      box-shadow:0 10px 22px rgba(0,0,0,.12);
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+    .btn.primary{background:#10182f;color:#fff}
+    .btn.soft{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.24);box-shadow:none}
+    .btn.ghost{background:#eef2ff;color:#243bce;box-shadow:none}
+    .btn.green{background:#eafaf5;color:#087a60;box-shadow:none}
+    .btn.red{background:#fff0ee;color:#bf2d25;box-shadow:none}
+    .btn.small{padding:8px 10px;border-radius:12px;font-size:12px}
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      margin:16px 0;
+      overflow:auto;
+      padding-bottom:2px;
+    }
+
+    .tab{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.76);
+      color:var(--muted);
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .tab.active{
+      color:#fff;
+      border-color:transparent;
+      background:linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow:0 10px 24px rgba(49,87,246,.23);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:14px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.84);
+      border:1px solid rgba(231,235,243,.9);
+      border-radius:var(--radius);
+      box-shadow:0 10px 28px rgba(23,32,51,.06);
+      backdrop-filter:blur(8px);
+    }
+
+    .stats{margin:18px 0}
+    .stat{
+      grid-column:span 3;
+      padding:17px;
+      min-height:104px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .stat:after{
+      content:"";
+      position:absolute;
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      right:-28px;
+      bottom:-28px;
+      background:rgba(49,87,246,.08);
+    }
+
+    .stat .label{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+    }
+
+    .stat .value{
+      margin-top:8px;
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-.04em;
+    }
+
+    .stat .sub{
+      margin-top:6px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .panel{
+      padding:16px;
+    }
+
+    .panel-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .panel-title h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-.025em;
+    }
+
+    .panel-title p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+    }
+
+    .field label{
+      font-size:11px;
+      font-weight:900;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.035em;
+    }
+
+    input,select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      color:var(--ink);
+      padding:11px 12px;
+      outline:none;
+      min-height:43px;
+    }
+
+    input:focus,select:focus{
+      border-color:rgba(49,87,246,.55);
+      box-shadow:0 0 0 4px rgba(49,87,246,.10);
+    }
+
+    .search{min-width:240px}
+    .main-table-wrap{
+      overflow:auto;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:820px;
+    }
+
+    th,td{
+      padding:12px 12px;
+      text-align:left;
+      border-bottom:1px solid var(--line);
+      vertical-align:middle;
+      font-size:13px;
+    }
+
+    th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:#f8faff;
+      color:#58647a;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      font-weight:900;
+    }
+
+    tr:last-child td{border-bottom:0}
+    tbody tr:hover{background:#fbfcff}
+    .rank{
+      display:inline-grid;
+      place-items:center;
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      background:#eef2ff;
+      color:#243bce;
+      font-weight:900;
+    }
+    .rank.gold{background:#fff5d6;color:#9a6700}
+    .rank.silver{background:#eef0f5;color:#536071}
+    .rank.bronze{background:#fff0e8;color:#a94d19}
+
+    .athlete{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:190px;
+    }
+
+    .avatar{
+      width:38px;
+      height:38px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      color:#fff;
+      font-weight:900;
+      background:linear-gradient(135deg, var(--primary), var(--primary-2));
+    }
+
+    .avatar.girl{background:linear-gradient(135deg, #fb4f8f, #7b4dff)}
+    .athlete strong{display:block;font-size:13px}
+    .athlete span{display:block;margin-top:2px;font-size:11px;color:var(--muted)}
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border-radius:999px;
+      padding:6px 9px;
+      font-size:11px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .chip.putra{background:#eaf0ff;color:#2847c5}
+    .chip.putri{background:#ffeaf2;color:#c12f6f}
+    .score{
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+    .score.total{
+      color:#087a60;
+      font-size:15px;
+    }
+    .muted{color:var(--muted)}
+
+    .public-view,.admin-view{display:none}
+    .public-view.active,.admin-view.active{display:block}
+
+    .admin-layout{
+      display:grid;
+      grid-template-columns:380px 1fr;
+      gap:14px;
+      align-items:start;
+    }
+
+    .admin-form{
+      display:grid;
+      gap:12px;
+    }
+
+    .two{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .admin-note{
+      padding:12px;
+      border-radius:16px;
+      background:#f8faff;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.55;
+      border:1px dashed #ccd5f2;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .empty{
+      padding:24px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .toast{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      z-index:200;
+      max-width:320px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:#10182f;
+      color:#fff;
+      box-shadow:var(--shadow);
+      transform:translateY(24px);
+      opacity:0;
+      pointer-events:none;
+      transition:.24s ease;
+      font-size:13px;
+      line-height:1.45;
+    }
+    .toast.show{
+      transform:translateY(0);
+      opacity:1;
+    }
+    .toast.error{background:#7a1d18}
+
+    .mobile-card-list{display:none}
+
+    .footer{
+      margin-top:18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.55;
+    }
+
+    /* ============ MODAL & OVERLAY ============ */
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(13,18,38,.55);
+      backdrop-filter:blur(4px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:150;
+      padding:18px;
+    }
+    .overlay.show{display:flex}
+
+    .modal{
+      background:#fff;
+      border-radius:24px;
+      box-shadow:0 30px 80px rgba(0,0,0,.32);
+      width:min(420px, 100%);
+      padding:22px;
+      animation:popin .22s ease;
+    }
+    @keyframes popin{
+      from{transform:scale(.94) translateY(8px);opacity:0}
+      to{transform:scale(1) translateY(0);opacity:1}
+    }
+    .modal h3{
+      margin:0 0 6px;
+      font-size:18px;
+      letter-spacing:-.02em;
+    }
+    .modal p{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .modal .actions{justify-content:flex-end;margin-top:14px}
+
+    .loading{
+      position:fixed;
+      inset:0;
+      background:rgba(245,247,251,.7);
+      backdrop-filter:blur(2px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:140;
+    }
+    .loading.show{display:flex}
+    .spinner{
+      width:42px;height:42px;
+      border-radius:50%;
+      border:4px solid #e7ebf3;
+      border-top-color:var(--primary);
+      animation:spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .locked-notice{
+      padding:32px 22px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+    .locked-notice .lock-icon{
+      font-size:42px;
+      margin-bottom:8px;
+    }
+
+    @media (max-width:900px){
+      .hero-inner{grid-template-columns:1fr}
+      .hero-actions{justify-content:flex-start}
+      .stat{grid-column:span 6}
+      .admin-layout{grid-template-columns:1fr}
+    }
+
+    @media (max-width:620px){
+      .app{width:min(100% - 18px, 1180px);padding-top:9px}
+      .hero{border-radius:24px;padding:18px}
+      .hero p{font-size:13px}
+      .stat{grid-column:span 6;padding:14px;border-radius:18px;min-height:94px}
+      .stat .value{font-size:23px}
+      .panel{padding:12px;border-radius:18px}
+      .panel-head{display:block}
+      .filters{margin-top:12px}
+      .search{min-width:100%}
+      .two{grid-template-columns:1fr}
+      .main-table-wrap.mobile-hide{display:none}
+      .mobile-card-list{
+        display:grid;
+        gap:10px;
+      }
+      .result-card{
+        border:1px solid var(--line);
+        background:#fff;
+        border-radius:18px;
+        padding:12px;
+      }
+      .result-top{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+      }
+      .result-mid{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:8px;
+        margin-top:10px;
+      }
+      .mini-score{
+        background:#f8faff;
+        border-radius:14px;
+        padding:9px;
+      }
+      .mini-score span{
+        display:block;
+        color:var(--muted);
+        font-size:10px;
+        font-weight:900;
+        text-transform:uppercase;
+      }
+      .mini-score strong{
+        display:block;
+        margin-top:3px;
+        font-size:14px;
+      }
+      .result-total{
+        margin-top:10px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        border-top:1px solid var(--line);
+        padding-top:10px;
+      }
+      .btn{width:auto}
+    }
+
+    .gender-list{
+      display:grid;
+      gap:18px;
+    }
+
+    .gender-section{
+      display:grid;
+      gap:12px;
+    }
+
+    .gender-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    .gender-title h3{
+      margin:0;
+      font-size:16px;
+      letter-spacing:-.02em;
+    }
+
+    .gender-title p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .putra-title{
+      background:linear-gradient(135deg, #f8faff, #eef3ff);
+    }
+
+    .putri-title{
+      background:linear-gradient(135deg, #fff8fb, #ffeef5);
+    }
+
+    @media print{
+      body{background:#fff}
+      .tabs,.hero-actions,.filters,.admin-view,.footer,.overlay,.loading{display:none!important}
+      .public-view{display:block!important}
+      .hero{box-shadow:none;color:#111;background:#fff;border:1px solid #ddd}
+      .card{box-shadow:none;border:1px solid #ddd}
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <span class="badge">🏅 O2SN SD • Cabang Olahraga Senam</span>
+          <h1>Portal Pengumuman Nilai<br>Perorangan Serba Bisa</h1>
+          <p>
+            Daftar nilai nomor putra dan putri Perorangan Serba Bisa. Data tersinkron langsung dari Google Sheets melalui Google Apps Script.
+          </p>
+          <span class="sync-badge" id="syncBadge">
+            <span class="dot"></span>
+            <span id="syncText">Menghubungkan…</span>
+          </span>
+        </div>
+        <div class="hero-actions">
+          <button class="btn soft" id="btnRefresh" title="Ambil data terbaru">🔄 Refresh</button>
+          <button class="btn soft" onclick="window.print()">🖨️ Cetak</button>
+          <button class="btn soft" id="btnExportCsv">⬇️ Export CSV</button>
+          <button class="btn" id="btnGoAdmin">🔐 Mode Admin</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="Navigasi portal">
+      <button class="tab active" data-view="public">📢 Pengumuman Nilai</button>
+      <button class="tab" data-view="admin">🔐 Admin Input Nilai</button>
+    </nav>
+
+    <section class="public-view active" id="publicView">
+      <div class="grid stats">
+        <article class="card stat">
+          <div class="label">Total Atlet</div>
+          <div class="value" id="statTotal">0</div>
+          <div class="sub">Putra dan putri</div>
+        </article>
+        <article class="card stat">
+          <div class="label">Peserta Putra</div>
+          <div class="value" id="statPutra">0</div>
+          <div class="sub">Nomor perorangan serba bisa</div>
+        </article>
+        <article class="card stat">
+          <div class="label">Peserta Putri</div>
+          <div class="value" id="statPutri">0</div>
+          <div class="sub">Nomor perorangan serba bisa</div>
+        </article>
+        <article class="card stat">
+          <div class="label">Nilai Tertinggi</div>
+          <div class="value" id="statBest">0.000</div>
+          <div class="sub" id="statBestName">Belum ada data</div>
+        </article>
+      </div>
+
+      <section class="card panel">
+        <div class="panel-head">
+          <div class="panel-title">
+            <h2>📊 Daftar Nilai Perorangan Serba Bisa</h2>
+            <p>Data ditampilkan terpisah antara Putra dan Putri. Urutan dapat diubah berdasarkan total nilai.</p>
+          </div>
+          <div class="filters">
+            <div class="field">
+              <label>Urutan Nilai</label>
+              <select id="sortOrder">
+                <option value="desc">Tertinggi ke Terendah</option>
+                <option value="asc">Terendah ke Tertinggi</option>
+              </select>
+            </div>
+            <div class="field search">
+              <label>Cari Atlet/Sekolah</label>
+              <input id="searchInput" type="search" placeholder="Ketik nama, sekolah, kecamatan..." />
+            </div>
+          </div>
+        </div>
+
+        <div class="gender-list">
+          <section class="gender-section">
+            <div class="gender-title putra-title">
+              <div>
+                <h3>🤸‍♂️ Nomor Putra</h3>
+                <p id="putraCount">0 atlet</p>
+              </div>
+            </div>
+
+            <div class="main-table-wrap mobile-hide">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Atlet</th>
+                    <th>Asal Sekolah</th>
+                    <th>Kecamatan/Kontingen</th>
+                    <th>Nilai 1</th>
+                    <th>Nilai 2</th>
+                    <th>Nilai 3</th>
+                    <th>Nilai 4</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="putraBody"></tbody>
+              </table>
+            </div>
+
+            <div class="mobile-card-list" id="putraCards"></div>
+          </section>
+
+          <section class="gender-section">
+            <div class="gender-title putri-title">
+              <div>
+                <h3>🤸‍♀️ Nomor Putri</h3>
+                <p id="putriCount">0 atlet</p>
+              </div>
+            </div>
+
+            <div class="main-table-wrap mobile-hide">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Atlet</th>
+                    <th>Asal Sekolah</th>
+                    <th>Kecamatan/Kontingen</th>
+                    <th>Nilai 1</th>
+                    <th>Nilai 2</th>
+                    <th>Nilai 3</th>
+                    <th>Nilai 4</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="putriBody"></tbody>
+              </table>
+            </div>
+
+            <div class="mobile-card-list" id="putriCards"></div>
+          </section>
+        </div>
+      </section>
+    </section>
+
+    <section class="admin-view" id="adminView">
+      <!-- Konten admin di-render via JS, tergantung status login -->
+      <div id="adminContent"></div>
+    </section>
+
+    <p class="footer">
+      © 2026 Portal O2SN SD Cabang Olahraga Senam • Data tersinkron via Google Apps Script.
+    </p>
+  </main>
+
+  <!-- ========== TOAST ========== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ========== LOADING OVERLAY ========== -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ========== MODAL LOGIN ========== -->
+  <div class="overlay" id="loginOverlay">
+    <div class="modal">
+      <h3>🔐 Login Admin</h3>
+      <p>Masukkan password admin untuk mengakses input nilai. Password divalidasi langsung di server.</p>
+      <form id="loginForm">
+        <div class="field" style="margin-bottom:12px">
+          <label>Password</label>
+          <input id="loginPassword" type="password" autocomplete="current-password" required placeholder="••••••••" />
+        </div>
+        <div class="actions">
+          <button class="btn ghost" type="button" id="loginCancel">Batal</button>
+          <button class="btn primary" type="submit" id="loginSubmit">Masuk</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== MODAL KONFIRMASI ========== -->
+  <div class="overlay" id="confirmOverlay">
+    <div class="modal">
+      <h3 id="confirmTitle">Konfirmasi</h3>
+      <p id="confirmMessage">Apakah Anda yakin?</p>
+      <div class="actions">
+        <button class="btn ghost" type="button" id="confirmNo">Batal</button>
+        <button class="btn red" type="button" id="confirmYes">Ya, lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+     * KONFIGURASI BACKEND
+     * Ganti URL di bawah dengan URL Web App Google Apps Script Anda
+     * (lihat README_DEPLOY.md langkah 6).
+     * ============================================================ */
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzcYz92K-VYzuZlyMQpFh0o4pxAsPnnFVB-ISTzI_vKAMFtRD_-xbAH-5QwsgrlJB0b/exec";
+
+    /* ============================================================
+     * STATE
+     * ============================================================ */
+    let athletes = [];          // sumber data dari server
+    let adminAuthed = false;    // status login admin (session memori saja)
+    let adminPw = "";           // password admin in-memory; dibuang saat logout/refresh
+
+    /* ============================================================
+     * UTILITIES
+     * ============================================================ */
+    const el = (id) => document.getElementById(id);
+    const fmt = (num) => Number(num || 0).toFixed(3);
+    const totalOf = (item) => Number(item.score1 || 0) + Number(item.score2 || 0) + Number(item.score3 || 0) + Number(item.score4 || 0);
+    const initials = (name) => name.split(" ").map(w => w[0]).join("").slice(0,2).toUpperCase();
+
+    function toast(message, isError){
+      const t = el("toast");
+      t.textContent = message;
+      t.classList.toggle("error", !!isError);
+      t.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function setLoading(on){
+      el("loading").classList.toggle("show", !!on);
+    }
+
+    function setSyncStatus(status, text){
+      const badge = el("syncBadge");
+      badge.classList.remove("offline","syncing");
+      if(status === "offline") badge.classList.add("offline");
+      if(status === "syncing") badge.classList.add("syncing");
+      el("syncText").textContent = text;
+    }
+
+    /* ============================================================
+     * MODAL PROMISE-BASED (gantikan window.confirm yang sering
+     * diblok di sandboxed iframe / embed)
+     * ============================================================ */
+    function showConfirm(title, message, confirmLabel){
+      return new Promise(resolve => {
+        el("confirmTitle").textContent = title || "Konfirmasi";
+        el("confirmMessage").textContent = message || "Apakah Anda yakin?";
+        el("confirmYes").textContent = confirmLabel || "Ya, lanjutkan";
+        el("confirmOverlay").classList.add("show");
+        const yes = el("confirmYes"), no = el("confirmNo");
+        const cleanup = (val) => {
+          el("confirmOverlay").classList.remove("show");
+          yes.removeEventListener("click", onYes);
+          no.removeEventListener("click", onNo);
+          resolve(val);
+        };
+        const onYes = () => cleanup(true);
+        const onNo  = () => cleanup(false);
+        yes.addEventListener("click", onYes);
+        no.addEventListener("click", onNo);
+      });
+    }
+
+    function showLogin(){
+      return new Promise(resolve => {
+        el("loginPassword").value = "";
+        el("loginOverlay").classList.add("show");
+        setTimeout(() => el("loginPassword").focus(), 100);
+
+        const form = el("loginForm");
+        const cancel = el("loginCancel");
+
+        const cleanup = (val) => {
+          el("loginOverlay").classList.remove("show");
+          form.removeEventListener("submit", onSubmit);
+          cancel.removeEventListener("click", onCancel);
+          resolve(val);
+        };
+        const onSubmit = (ev) => {
+          ev.preventDefault();
+          const pw = el("loginPassword").value;
+          cleanup(pw);
+        };
+        const onCancel = () => cleanup(null);
+        form.addEventListener("submit", onSubmit);
+        cancel.addEventListener("click", onCancel);
+      });
+    }
+
+    /* ============================================================
+     * API LAYER — semua komunikasi ke GAS
+     *   - GET untuk read (parameter via querystring)
+     *   - POST untuk write (body JSON, Content-Type text/plain
+     *     untuk hindari preflight CORS yang tidak ditangani GAS)
+     * ============================================================ */
+    async function apiGet(action){
+      if(!GAS_URL || GAS_URL.includes("PASTE_URL")){
+        throw new Error("GAS_URL belum diisi. Lihat README_DEPLOY.md.");
+      }
+      const url = GAS_URL + "?action=" + encodeURIComponent(action);
+      const res = await fetch(url, { method:"GET", redirect:"follow" });
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error || "Gagal mengambil data.");
+      return data;
+    }
+
+    async function apiPost(payload){
+      if(!GAS_URL || GAS_URL.includes("PASTE_URL")){
+        throw new Error("GAS_URL belum diisi. Lihat README_DEPLOY.md.");
+      }
+      const res = await fetch(GAS_URL, {
+        method: "POST",
+        redirect: "follow",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error || "Operasi gagal.");
+      return data;
+    }
+
+    async function fetchAthletes(){
+      setSyncStatus("syncing", "Menyinkronkan…");
+      try{
+        const data = await apiGet("list");
+        athletes = data.athletes || [];
+        const now = new Date();
+        const time = now.toLocaleTimeString("id-ID", {hour:"2-digit", minute:"2-digit"});
+        setSyncStatus("online", `Tersinkron · ${time}`);
+        renderAll();
+      }catch(err){
+        setSyncStatus("offline", "Gagal sinkron");
+        toast("Gagal memuat data: " + err.message, true);
+        console.error(err);
+      }
+    }
+
+    /* ============================================================
+     * RENDERING
+     * ============================================================ */
+    function renderStats(){
+      const total = athletes.length;
+      const putra = athletes.filter(a => a.gender === "Putra").length;
+      const putri = athletes.filter(a => a.gender === "Putri").length;
+      el("statTotal").textContent = total;
+      el("statPutra").textContent = putra;
+      el("statPutri").textContent = putri;
+
+      if(athletes.length === 0){
+        el("statBest").textContent = "0.000";
+        el("statBestName").textContent = "Belum ada data";
+        return;
+      }
+      const best = [...athletes].sort((a,b) => totalOf(b) - totalOf(a))[0];
+      el("statBest").textContent = fmt(totalOf(best));
+      el("statBestName").textContent = `${best.name} (${best.gender})`;
+    }
+
+    function filteredByGender(gender){
+      const q = el("searchInput").value.trim().toLowerCase();
+      const order = el("sortOrder").value;
+      return athletes
+        .filter(item => item.gender === gender)
+        .filter(item => {
+          const haystack = `${item.name} ${item.school} ${item.district} ${item.gender}`.toLowerCase();
+          return haystack.includes(q);
+        })
+        .sort((a,b) => order === "asc" ? totalOf(a) - totalOf(b) : totalOf(b) - totalOf(a));
+    }
+
+    function rankClass(idx){
+      if(idx === 0) return "gold";
+      if(idx === 1) return "silver";
+      if(idx === 2) return "bronze";
+      return "";
+    }
+
+    function renderGenderTable(gender, bodyId, cardsId, countId){
+      const data = filteredByGender(gender);
+      const body = el(bodyId);
+      const mobile = el(cardsId);
+      el(countId).textContent = `${data.length} atlet`;
+
+      if(data.length === 0){
+        body.innerHTML = `<tr><td colspan="9" class="empty">Belum ada data ${gender} sesuai pencarian.</td></tr>`;
+        mobile.innerHTML = `<div class="empty card">Belum ada data ${gender} sesuai pencarian.</div>`;
+        return;
+      }
+
+      body.innerHTML = data.map((item, index) => {
+        const avatarClass = item.gender === "Putri" ? "girl" : "";
+        const rc = rankClass(index);
+        return `
+          <tr>
+            <td><span class="rank ${rc}">${index + 1}</span></td>
+            <td>
+              <div class="athlete">
+                <span class="avatar ${avatarClass}">${initials(item.name)}</span>
+                <div>
+                  <strong>${item.name}</strong>
+                  <span>${item.gender}</span>
+                </div>
+              </div>
+            </td>
+            <td>${item.school}</td>
+            <td>${item.district}</td>
+            <td class="score">${fmt(item.score1)}</td>
+            <td class="score">${fmt(item.score2)}</td>
+            <td class="score">${fmt(item.score3)}</td>
+            <td class="score">${fmt(item.score4)}</td>
+            <td class="score total">${fmt(totalOf(item))}</td>
+          </tr>
+        `;
+      }).join("");
+
+      mobile.innerHTML = data.map((item, index) => {
+        const rc = rankClass(index);
+        return `
+          <article class="result-card">
+            <div class="result-top">
+              <div class="athlete">
+                <span class="rank ${rc}">${index + 1}</span>
+                <div>
+                  <strong>${item.name}</strong>
+                  <span>${item.school}</span>
+                </div>
+              </div>
+              <span class="chip ${item.gender.toLowerCase()}">${item.gender}</span>
+            </div>
+            <div class="result-mid">
+              <div class="mini-score"><span>Nilai 1</span><strong>${fmt(item.score1)}</strong></div>
+              <div class="mini-score"><span>Nilai 2</span><strong>${fmt(item.score2)}</strong></div>
+              <div class="mini-score"><span>Nilai 3</span><strong>${fmt(item.score3)}</strong></div>
+              <div class="mini-score"><span>Nilai 4</span><strong>${fmt(item.score4)}</strong></div>
+            </div>
+            <div class="result-total">
+              <span class="muted">${item.district}</span>
+              <strong class="score total">Total ${fmt(totalOf(item))}</strong>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderPublicTable(){
+      renderGenderTable("Putra", "putraBody", "putraCards", "putraCount");
+      renderGenderTable("Putri", "putriBody", "putriCards", "putriCount");
+    }
+
+    function renderAdmin(){
+      const container = el("adminContent");
+
+      // Belum login → tampilkan gerbang
+      if(!adminAuthed){
+        container.innerHTML = `
+          <section class="card panel">
+            <div class="locked-notice">
+              <div class="lock-icon">🔒</div>
+              <h2 style="margin:0 0 6px">Akses Admin Terkunci</h2>
+              <p style="margin:0 0 16px;color:var(--muted)">Masuk dengan password admin untuk menginput, mengedit, atau menghapus data nilai.</p>
+              <button class="btn primary" id="btnOpenLogin">🔐 Login Admin</button>
+            </div>
+          </section>
+        `;
+        el("btnOpenLogin").addEventListener("click", handleLogin);
+        return;
+      }
+
+      // Sudah login → render form + tabel admin
+      container.innerHTML = `
+        <div class="admin-layout">
+          <section class="card panel">
+            <div class="panel-title" style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+              <div>
+                <h2 id="formTitle">Input Data Atlet</h2>
+                <p>Data disimpan langsung ke Google Sheets. Sesi admin hanya berlaku selama tab terbuka.</p>
+              </div>
+              <button class="btn small red" type="button" id="btnLogout" title="Keluar dari sesi admin">Logout</button>
+            </div>
+
+            <form class="admin-form" id="athleteForm">
+              <input type="hidden" id="editId" />
+              <div class="two">
+                <div class="field">
+                  <label>Nama Atlet</label>
+                  <input id="name" required placeholder="Contoh: Aisyah Rahma" />
+                </div>
+                <div class="field">
+                  <label>Kategori</label>
+                  <select id="gender" required>
+                    <option value="Putra">Putra</option>
+                    <option value="Putri">Putri</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="two">
+                <div class="field">
+                  <label>Asal Sekolah</label>
+                  <input id="school" required placeholder="Contoh: SDN Ulujami 06 Pagi" />
+                </div>
+                <div class="field">
+                  <label>Kecamatan/Kontingen</label>
+                  <input id="district" required placeholder="Contoh: Pesanggrahan" />
+                </div>
+              </div>
+
+              <div class="two">
+                <div class="field">
+                  <label>Nilai 1</label>
+                  <input id="score1" type="number" step="0.001" min="0" max="20" required placeholder="0.000" />
+                </div>
+                <div class="field">
+                  <label>Nilai 2</label>
+                  <input id="score2" type="number" step="0.001" min="0" max="20" required placeholder="0.000" />
+                </div>
+              </div>
+
+              <div class="two">
+                <div class="field">
+                  <label>Nilai 3</label>
+                  <input id="score3" type="number" step="0.001" min="0" max="20" required placeholder="0.000" />
+                </div>
+                <div class="field">
+                  <label>Nilai 4</label>
+                  <input id="score4" type="number" step="0.001" min="0" max="20" required placeholder="0.000" />
+                </div>
+              </div>
+
+              <div class="admin-note">
+                <strong>Catatan:</strong> total nilai dihitung otomatis dari Nilai 1–4. Setiap penyimpanan langsung tertulis di Google Sheets dengan proteksi LockService anti tumpang tindih.
+              </div>
+
+              <div class="actions">
+                <button class="btn primary" type="submit" id="submitBtn">💾 Simpan Data</button>
+                <button class="btn ghost" type="button" id="btnCancelEdit">Batal Edit</button>
+                <button class="btn green" type="button" id="btnCopyJson">Copy JSON</button>
+                <button class="btn red" type="button" id="btnReset">Reset Dummy</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="card panel">
+            <div class="panel-head">
+              <div class="panel-title">
+                <h2>Data Masuk</h2>
+                <p>Admin dapat mengedit atau menghapus data atlet sebelum diumumkan.</p>
+              </div>
+            </div>
+            <div class="main-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Atlet</th>
+                    <th>Kategori</th>
+                    <th>Sekolah</th>
+                    <th>Total</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="adminBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      `;
+
+      renderAdminTable();
+      bindAdminEvents();
+    }
+
+    function renderAdminTable(){
+      const body = el("adminBody");
+      const data = [...athletes].sort((a,b) => totalOf(b) - totalOf(a));
+
+      if(data.length === 0){
+        body.innerHTML = `<tr><td colspan="5" class="empty">Belum ada data.</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = data.map(item => `
+        <tr>
+          <td>
+            <div class="athlete">
+              <span class="avatar ${item.gender === "Putri" ? "girl" : ""}">${initials(item.name)}</span>
+              <div>
+                <strong>${item.name}</strong>
+                <span>${item.district}</span>
+              </div>
+            </div>
+          </td>
+          <td><span class="chip ${item.gender.toLowerCase()}">${item.gender}</span></td>
+          <td>${item.school}</td>
+          <td class="score total">${fmt(totalOf(item))}</td>
+          <td>
+            <div class="actions">
+              <button class="btn small ghost" data-act="edit" data-id="${item.id}">Edit</button>
+              <button class="btn small red" data-act="del" data-id="${item.id}">Hapus</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+
+      // Delegasi event untuk tombol edit/hapus
+      body.querySelectorAll("button[data-act]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.id;
+          if(btn.dataset.act === "edit") editAthlete(id);
+          else deleteAthlete(id);
+        });
+      });
+    }
+
+    function renderAll(){
+      renderStats();
+      renderPublicTable();
+      if(el("adminView").classList.contains("active")) renderAdmin();
+    }
+
+    /* ============================================================
+     * ADMIN ACTIONS (semua async ke GAS)
+     * ============================================================ */
+    function bindAdminEvents(){
+      el("athleteForm").addEventListener("submit", handleSubmit);
+      el("btnCancelEdit").addEventListener("click", resetForm);
+      el("btnCopyJson").addEventListener("click", handleCopyJson);
+      el("btnReset").addEventListener("click", handleResetSeed);
+      el("btnLogout").addEventListener("click", handleLogout);
+    }
+
+    async function handleSubmit(event){
+      event.preventDefault();
+      const payload = {
+        id: el("editId").value || null,
+        name: el("name").value.trim(),
+        gender: el("gender").value,
+        school: el("school").value.trim(),
+        district: el("district").value.trim(),
+        score1: Number(el("score1").value || 0),
+        score2: Number(el("score2").value || 0),
+        score3: Number(el("score3").value || 0),
+        score4: Number(el("score4").value || 0)
+      };
+
+      if(!payload.name || !payload.school || !payload.district){
+        toast("Lengkapi nama, sekolah, dan kontingen.", true);
+        return;
+      }
+
+      setLoading(true);
+      try{
+        await apiPost({ action:"upsert", password: adminPw, athlete: payload });
+        toast(payload.id ? "Data atlet berhasil diperbarui." : "Data atlet berhasil ditambahkan.");
+        resetForm();
+        await fetchAthletes();
+        renderAdmin();
+      }catch(err){
+        toast("Gagal menyimpan: " + err.message, true);
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    function editAthlete(id){
+      const item = athletes.find(a => a.id === id);
+      if(!item) return;
+      el("editId").value = item.id;
+      el("name").value = item.name;
+      el("gender").value = item.gender;
+      el("school").value = item.school;
+      el("district").value = item.district;
+      el("score1").value = item.score1;
+      el("score2").value = item.score2;
+      el("score3").value = item.score3;
+      el("score4").value = item.score4;
+      el("formTitle").textContent = "Edit Data Atlet";
+      el("submitBtn").textContent = "✅ Update Data";
+      toast("Mode edit aktif.");
+      document.querySelector("#athleteForm").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    async function deleteAthlete(id){
+      const item = athletes.find(a => a.id === id);
+      if(!item) return;
+      const ok = await showConfirm("Hapus Data Atlet", `Hapus data ${item.name}? Tindakan ini tidak bisa dibatalkan.`, "Ya, hapus");
+      if(!ok) return;
+
+      setLoading(true);
+      try{
+        await apiPost({ action:"delete", password: adminPw, id });
+        toast("Data berhasil dihapus.");
+        await fetchAthletes();
+        renderAdmin();
+      }catch(err){
+        toast("Gagal menghapus: " + err.message, true);
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    function resetForm(){
+      const form = el("athleteForm");
+      if(form){
+        form.reset();
+        el("editId").value = "";
+        el("formTitle").textContent = "Input Data Atlet";
+        el("submitBtn").textContent = "💾 Simpan Data";
+      }
+    }
+
+    async function handleResetSeed(){
+      const ok = await showConfirm("Reset ke Data Dummy", "Seluruh data atlet di Google Sheets akan dihapus dan diganti dengan 6 atlet dummy. Lanjutkan?", "Ya, reset");
+      if(!ok) return;
+
+      setLoading(true);
+      try{
+        await apiPost({ action:"resetSeed", password: adminPw });
+        toast("Data berhasil direset ke dummy.");
+        resetForm();
+        await fetchAthletes();
+        renderAdmin();
+      }catch(err){
+        toast("Gagal reset: " + err.message, true);
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    async function handleCopyJson(){
+      try{
+        const json = JSON.stringify(athletes, null, 2);
+        await navigator.clipboard.writeText(json);
+        toast("JSON data berhasil disalin.");
+      }catch(err){
+        toast("Gagal menyalin JSON.", true);
+      }
+    }
+
+    /* ============================================================
+     * AUTH FLOW
+     * ============================================================ */
+    async function handleLogin(){
+      const pw = await showLogin();
+      if(pw === null) return; // user batal
+
+      setLoading(true);
+      try{
+        const res = await apiPost({ action:"verifyPassword", password: pw });
+        if(res.ok){
+          adminAuthed = true;
+          adminPw = pw;
+          toast("Login berhasil. Selamat bekerja.");
+          renderAdmin();
+        }else{
+          toast("Password salah. Coba lagi.", true);
+        }
+      }catch(err){
+        toast("Tidak bisa menghubungi server: " + err.message, true);
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    function handleLogout(){
+      adminAuthed = false;
+      adminPw = "";
+      toast("Sesi admin diakhiri.");
+      renderAdmin();
+    }
+
+    /* ============================================================
+     * NAVIGASI TAB & EVENTS
+     * ============================================================ */
+    function openView(viewName){
+      // Tab admin butuh login
+      if(viewName === "admin" && !adminAuthed){
+        document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.view === "admin"));
+        el("publicView").classList.remove("active");
+        el("adminView").classList.add("active");
+        renderAdmin(); // tampilkan locked-notice
+        handleLogin(); // langsung tawarkan login modal
+        return;
+      }
+
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.view === viewName));
+      el("publicView").classList.toggle("active", viewName === "public");
+      el("adminView").classList.toggle("active", viewName === "admin");
+      if(viewName === "admin") renderAdmin();
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => openView(tab.dataset.view));
+    });
+
+    el("btnGoAdmin").addEventListener("click", () => openView("admin"));
+    el("sortOrder").addEventListener("change", renderAll);
+    el("searchInput").addEventListener("input", renderPublicTable);
+    el("btnRefresh").addEventListener("click", fetchAthletes);
+
+    el("btnExportCsv").addEventListener("click", () => {
+      const rows = [
+        ["Rank","Nama Atlet","Kategori","Sekolah","Kontingen","Nilai 1","Nilai 2","Nilai 3","Nilai 4","Total"],
+        ...[...athletes].sort((a,b) => {
+          const order = el("sortOrder")?.value || "desc";
+          return order === "asc" ? totalOf(a) - totalOf(b) : totalOf(b) - totalOf(a);
+        }).map((item, i) => [
+          i+1, item.name, item.gender, item.school, item.district,
+          fmt(item.score1), fmt(item.score2), fmt(item.score3), fmt(item.score4), fmt(totalOf(item))
+        ])
+      ];
+
+      const csv = rows.map(row => row.map(value => `"${String(value).replaceAll('"','""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "rekap-nilai-o2sn-senam.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast("CSV berhasil dibuat.");
+    });
+
+    // Auto-refresh data publik tiap 30 detik (hanya saat tab publik aktif)
+    setInterval(() => {
+      if(document.visibilityState === "visible" && el("publicView").classList.contains("active")){
+        fetchAthletes();
+      }
+    }, 30000);
+
+    // Refresh saat tab di-focus lagi setelah lama tidak dibuka
+    document.addEventListener("visibilitychange", () => {
+      if(document.visibilityState === "visible") fetchAthletes();
+    });
+
+    /* ============================================================
+     * BOOT
+     * ============================================================ */
+    renderAdmin(); // initial state admin = locked-notice
+    fetchAthletes();
+  </script>
+</body>
+</html>
