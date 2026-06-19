@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- SheetJS untuk export/import Excel (xlsx) — load defer agar tidak block paint -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
   <style>
     :root{
       --bg:#f5f7fb;
@@ -744,12 +746,17 @@
                 <div class="field">
                   <label>Wilayah Kota/Kabupaten</label>
                   <select id="athRegion" required>
-                    <option value="">— pilih —</option>
-                    <option>Jakarta Pusat</option>
-                    <option>Jakarta Utara</option>
-                    <option>Jakarta Selatan</option>
-                    <option>Jakarta Barat</option>
-                    <option>Jakarta Timur</option>
+                    <option value="">— pilih wilayah —</option>
+                    <option>Jakarta Utara 1</option>
+                    <option>Jakarta Utara 2</option>
+                    <option>Jakarta Barat 1</option>
+                    <option>Jakarta Barat 2</option>
+                    <option>Jakarta Selatan 1</option>
+                    <option>Jakarta Selatan 2</option>
+                    <option>Jakarta Timur 1</option>
+                    <option>Jakarta Timur 2</option>
+                    <option>Jakarta Pusat 1</option>
+                    <option>Jakarta Pusat 2</option>
                     <option>Kepulauan Seribu</option>
                   </select>
                 </div>
@@ -768,6 +775,23 @@
                 <button class="btn ghost" type="button" id="athCancelBtn">Batal Edit</button>
               </div>
             </form>
+
+            <hr style="border:0;border-top:1px solid var(--line);margin:18px 0 14px">
+
+            <div class="panel-title" style="margin-bottom:10px">
+              <h2 style="font-size:15px">📊 Import / Export Massal</h2>
+              <p>Untuk input banyak atlet sekaligus, gunakan template Excel.</p>
+            </div>
+
+            <div class="actions" style="margin-bottom:10px">
+              <button class="btn ghost small" type="button" id="btnDownloadTemplate">📥 Download Template</button>
+              <button class="btn green small" type="button" id="btnImportExcel">📤 Import dari Excel</button>
+              <input type="file" id="importFileInput" accept=".xlsx,.xls,.csv" style="display:none" />
+            </div>
+
+            <div class="admin-note" style="font-size:11.5px">
+              <strong>Cara pakai:</strong> klik <em>Download Template</em>, isi data di Excel (jangan ubah header), simpan, lalu klik <em>Import dari Excel</em>. Atlet baru akan ditambahkan; atlet dengan nama+sekolah+kategori sama akan di-update.
+            </div>
           </section>
 
           <section class="card panel">
@@ -864,28 +888,29 @@
         <div class="grid-2">
           <section class="card panel">
             <div class="panel-title" style="margin-bottom:12px">
-              <h2>Cetak Rekap Publik</h2>
-              <p>Membuka tampilan halaman publik dan langsung memunculkan dialog cetak.</p>
+              <h2>Cetak Rekap Nilai</h2>
+              <p>Membuka rekap rapi di jendela baru dan langsung memunculkan dialog cetak. Halaman admin tetap pada posisinya.</p>
             </div>
             <div class="actions">
-              <button class="btn primary" id="btnPrintPublic">🖨️ Buka &amp; Cetak</button>
+              <button class="btn primary" id="btnPrintPublic">🖨️ Cetak Rekap</button>
             </div>
             <div class="admin-note" style="margin-top:14px">
-              Disarankan pilih <strong>Orientation: Landscape</strong> di dialog cetak agar kolom nilai tidak terpotong.
+              Format A4 landscape, otomatis terbagi per kategori Putra dan Putri, urut nilai tertinggi. Pastikan pop-up diizinkan oleh browser.
             </div>
           </section>
 
           <section class="card panel">
             <div class="panel-title" style="margin-bottom:12px">
-              <h2>Export Excel (CSV)</h2>
-              <p>Unduh seluruh data atlet beserta nilai dalam format CSV. Dapat dibuka langsung di Microsoft Excel atau Google Sheets.</p>
+              <h2>Export Data Nilai</h2>
+              <p>Unduh seluruh data atlet beserta nilai akhir. Format Excel direkomendasikan untuk pengolahan lanjut.</p>
             </div>
             <div class="actions">
-              <button class="btn green" id="btnExportCsv">⬇️ Export Excel</button>
+              <button class="btn green" id="btnExportXlsx">📊 Export Excel (.xlsx)</button>
+              <button class="btn ghost" id="btnExportCsv">⬇️ Export CSV</button>
               <button class="btn ghost" id="btnExportJson">⬇️ Export JSON</button>
             </div>
             <div class="admin-note" style="margin-top:14px">
-              File CSV menggunakan UTF-8 BOM agar karakter Indonesia tampil benar di Excel.
+              Format Excel (.xlsx) lebih baik untuk arsip — kolom otomatis ter-format dan terlebar sesuai isi. CSV cocok kalau perlu di-import ke sistem lain.
             </div>
           </section>
         </div>
@@ -987,6 +1012,25 @@
       <div class="actions">
         <button class="btn ghost" type="button" id="confirmNo">Batal</button>
         <button class="btn red" type="button" id="confirmYes">Ya, lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL IMPORT PREVIEW ========== -->
+  <div class="overlay" id="importOverlay">
+    <div class="modal" style="width:min(640px,100%)">
+      <h3>📤 Pratinjau Import Data Atlet</h3>
+      <p id="importSummary">—</p>
+      <div id="importErrorList" style="display:none;margin-bottom:12px"></div>
+      <div id="importPreviewWrap" style="max-height:280px;overflow:auto;border:1px solid var(--line);border-radius:12px">
+        <table style="min-width:0;font-size:12px">
+          <thead><tr><th>Nama</th><th>Kategori</th><th>Sekolah</th><th>Wilayah</th><th>Status</th></tr></thead>
+          <tbody id="importPreviewBody"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" type="button" id="importCancel">Batal</button>
+        <button class="btn primary" type="button" id="importConfirm">💾 Simpan Semua</button>
       </div>
     </div>
   </div>
@@ -1557,10 +1601,308 @@
       toast("File JSON berhasil diunduh.", "success");
     }
 
+    /* ============================================================
+     * EXPORT EXCEL (xlsx) — pakai SheetJS
+     * ============================================================ */
+    function ensureXLSX(){
+      if(typeof XLSX === "undefined"){
+        toast("Library Excel masih dimuat… coba lagi sebentar.", "error");
+        return false;
+      }
+      return true;
+    }
+
+    function handleExportXlsx(){
+      if(!ensureXLSX()) return;
+      const sorted = [...athletes].sort((a,b) => Number(b.score) - Number(a.score));
+      const data = [
+        ["Rank","Nama Atlet","Kategori","Asal Sekolah","Wilayah","Nilai Akhir"],
+        ...sorted.map((it, i) => [ i+1, it.name, it.gender, it.school, it.region, Number(it.score) ])
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      // Lebar kolom
+      ws['!cols'] = [{wch:6},{wch:28},{wch:10},{wch:32},{wch:20},{wch:14}];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Rekap Nilai");
+      XLSX.writeFile(wb, "O2SN-Senam-Rekap-Nilai.xlsx");
+      toast("File Excel berhasil diunduh.", "success");
+    }
+
+    /* ============================================================
+     * DOWNLOAD TEMPLATE — file Excel kosong dengan header & contoh
+     * ============================================================ */
+    function handleDownloadTemplate(){
+      if(!ensureXLSX()) return;
+      const data = [
+        // Header — JANGAN diubah di file Excel
+        ["Nama Atlet","Kategori","Asal Sekolah","Wilayah"],
+        // Contoh 1 baris
+        ["Aisyah Rahma","Putri","SDN Ulujami 01 Pagi","Jakarta Selatan 1"],
+        // Baris kosong untuk diisi user
+        ["","","",""],["","","",""],["","","",""]
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      ws['!cols'] = [{wch:28},{wch:10},{wch:32},{wch:20}];
+
+      // Sheet petunjuk
+      const help = [
+        ["PETUNJUK PENGISIAN — Template Import Atlet O2SN Senam"],
+        [""],
+        ["1. Buka sheet 'Data Atlet' (tab di bawah)."],
+        ["2. Isi mulai dari baris 2 (baris 1 adalah header, JANGAN DIUBAH)."],
+        ["3. Hapus baris contoh 'Aisyah Rahma' jika tidak diperlukan."],
+        ["4. Kolom 'Kategori' hanya boleh diisi: Putra atau Putri."],
+        ["5. Kolom 'Wilayah' harus salah satu dari pilihan berikut:"],
+        ["   • Jakarta Utara 1"],
+        ["   • Jakarta Utara 2"],
+        ["   • Jakarta Barat 1"],
+        ["   • Jakarta Barat 2"],
+        ["   • Jakarta Selatan 1"],
+        ["   • Jakarta Selatan 2"],
+        ["   • Jakarta Timur 1"],
+        ["   • Jakarta Timur 2"],
+        ["   • Jakarta Pusat 1"],
+        ["   • Jakarta Pusat 2"],
+        ["   • Kepulauan Seribu"],
+        [""],
+        ["6. Simpan file (Ctrl+S), lalu kembali ke aplikasi dan klik 'Import dari Excel'."],
+        ["7. Atlet dengan Nama+Sekolah+Kategori yang sama dengan data existing akan otomatis di-update,"],
+        ["   bukan ditambah baru."],
+        [""],
+        ["8. Nilai akhir TIDAK perlu diisi di template ini — diatur terpisah di menu Input Nilai."]
+      ];
+      const wsHelp = XLSX.utils.aoa_to_sheet(help);
+      wsHelp['!cols'] = [{wch:80}];
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Data Atlet");
+      XLSX.utils.book_append_sheet(wb, wsHelp, "Petunjuk");
+      XLSX.writeFile(wb, "Template-Import-Atlet-O2SN-Senam.xlsx");
+      toast("Template berhasil diunduh. Isi di Excel, lalu import.", "success");
+    }
+
+    /* ============================================================
+     * IMPORT EXCEL / CSV — preview dulu sebelum simpan
+     * ============================================================ */
+    let importBuffer = []; // hasil parsing yang siap di-submit
+
+    function handleImportExcel(){
+      if(!ensureXLSX()) return;
+      el("importFileInput").click();
+    }
+
+    async function handleImportFileChange(ev){
+      const file = ev.target.files[0];
+      if(!file) return;
+      ev.target.value = ""; // reset agar file yang sama bisa dipilih ulang
+
+      setLoading(true);
+      try{
+        const buf = await file.arrayBuffer();
+        const wb = XLSX.read(buf, { type:"array" });
+
+        // Ambil sheet pertama yang punya data (atau sheet bernama "Data Atlet")
+        let sheetName = wb.SheetNames.find(n => /data\s*atlet|atlet|peserta/i.test(n)) || wb.SheetNames[0];
+        const ws = wb.Sheets[sheetName];
+        const rows = XLSX.utils.sheet_to_json(ws, { header:1, defval:"" });
+
+        if(rows.length < 2){
+          toast("File kosong atau tidak ada baris data.", "error");
+          return;
+        }
+
+        // Deteksi header — case insensitive
+        const header = rows[0].map(h => String(h || "").trim().toLowerCase());
+        const colIdx = {
+          name: header.findIndex(h => /nama/i.test(h)),
+          gender: header.findIndex(h => /kategori|jenis|gender/i.test(h)),
+          school: header.findIndex(h => /sekolah/i.test(h)),
+          region: header.findIndex(h => /wilayah|kota|kab/i.test(h))
+        };
+
+        if(colIdx.name < 0 || colIdx.gender < 0 || colIdx.school < 0 || colIdx.region < 0){
+          toast("Header file tidak dikenali. Pastikan ada kolom: Nama Atlet, Kategori, Asal Sekolah, Wilayah.", "error");
+          return;
+        }
+
+        // Parse setiap baris
+        const VALID_REGIONS = [
+          'Jakarta Utara 1','Jakarta Utara 2','Jakarta Barat 1','Jakarta Barat 2',
+          'Jakarta Selatan 1','Jakarta Selatan 2','Jakarta Timur 1','Jakarta Timur 2',
+          'Jakarta Pusat 1','Jakarta Pusat 2','Kepulauan Seribu'
+        ];
+
+        const parsed = [];
+        const errors = [];
+        for(let i = 1; i < rows.length; i++){
+          const r = rows[i];
+          const name = String(r[colIdx.name] || "").trim();
+          const gender = String(r[colIdx.gender] || "").trim();
+          const school = String(r[colIdx.school] || "").trim();
+          const region = String(r[colIdx.region] || "").trim();
+
+          // Skip baris kosong
+          if(!name && !gender && !school && !region) continue;
+
+          const rowErrors = [];
+          if(!name) rowErrors.push("Nama kosong");
+          if(!["Putra","Putri"].includes(gender)) rowErrors.push(`Kategori harus Putra/Putri (got: '${gender}')`);
+          if(!school) rowErrors.push("Sekolah kosong");
+          if(!VALID_REGIONS.includes(region)) rowErrors.push(`Wilayah tidak valid: '${region}'`);
+
+          if(rowErrors.length > 0){
+            errors.push({ row: i + 1, message: rowErrors.join("; ") });
+          }else{
+            // Cek apakah match existing (insert/update)
+            const key = (s) => s.trim().toLowerCase();
+            const matched = athletes.find(a =>
+              key(a.name) === key(name) && key(a.school) === key(school) && key(a.gender) === key(gender)
+            );
+            parsed.push({
+              name, gender, school, region,
+              _status: matched ? "update" : "insert",
+              _matchedId: matched ? matched.id : null
+            });
+          }
+        }
+
+        if(parsed.length === 0 && errors.length === 0){
+          toast("Tidak ada data atlet yang bisa diproses.", "error");
+          return;
+        }
+
+        // Tampilkan preview
+        importBuffer = parsed;
+        showImportPreview(parsed, errors);
+      }catch(err){
+        toast("Gagal membaca file: " + err.message, "error");
+        console.error(err);
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    function showImportPreview(parsed, errors){
+      const insertCount = parsed.filter(p => p._status === "insert").length;
+      const updateCount = parsed.filter(p => p._status === "update").length;
+      const errCount = errors.length;
+
+      el("importSummary").innerHTML =
+        `<strong>${parsed.length}</strong> baris valid · ` +
+        `<span style="color:#087a60">${insertCount} baru</span> · ` +
+        `<span style="color:#a06000">${updateCount} update</span>` +
+        (errCount > 0 ? ` · <span style="color:#bf2d25">${errCount} error</span>` : "");
+
+      const errList = el("importErrorList");
+      if(errCount > 0){
+        errList.style.display = "block";
+        errList.innerHTML = `<div class="admin-note" style="background:#fff0ee;border-color:#ffc7c2;color:#7a1d18">
+          <strong>${errCount} baris dilewati karena error:</strong><br>
+          ${errors.map(e => `Baris ${e.row}: ${escapeHtml(e.message)}`).join("<br>")}
+        </div>`;
+      }else{
+        errList.style.display = "none";
+      }
+
+      const body = el("importPreviewBody");
+      if(parsed.length === 0){
+        body.innerHTML = `<tr><td colspan="5" class="empty">Tidak ada baris valid.</td></tr>`;
+      }else{
+        body.innerHTML = parsed.map(p => `
+          <tr>
+            <td>${escapeHtml(p.name)}</td>
+            <td><span class="chip ${p.gender.toLowerCase()}">${p.gender}</span></td>
+            <td>${escapeHtml(p.school)}</td>
+            <td>${escapeHtml(p.region)}</td>
+            <td>${p._status === "insert"
+              ? '<span class="chip scored">Baru</span>'
+              : '<span class="chip unscored">Update</span>'}</td>
+          </tr>
+        `).join("");
+      }
+
+      el("importConfirm").disabled = (parsed.length === 0);
+      el("importOverlay").classList.add("show");
+    }
+
+    async function confirmImport(){
+      if(importBuffer.length === 0) return;
+      setLoading(true);
+      el("importOverlay").classList.remove("show");
+      try{
+        // Buang field _status & _matchedId sebelum kirim
+        const payload = importBuffer.map(p => ({
+          name: p.name, gender: p.gender, school: p.school, region: p.region,
+          id: p._matchedId || null
+        }));
+        const res = await apiPost({ action:"bulkUpsertAthletes", password: adminPw, athletes: payload });
+        const r = res.result || {};
+        let msg = `Sukses: ${r.inserted || 0} ditambahkan, ${r.updated || 0} di-update.`;
+        if(r.errors && r.errors.length > 0){
+          msg += ` ${r.errors.length} gagal — cek console.`;
+          console.warn("Import errors:", r.errors);
+        }
+        toast(msg, "success");
+        importBuffer = [];
+        await fetchAll();
+      }catch(err){
+        toast("Gagal menyimpan: " + err.message, "error");
+      }finally{
+        setLoading(false);
+      }
+    }
+
     function handlePrintPublic(){
-      // Pindah ke tampilan publik, lalu trigger print
-      switchToPublic();
-      setTimeout(() => window.print(), 400);
+      // Buka window baru berisi rekap rapi untuk dicetak — admin tetap di tempat
+      const sorted = [...athletes].sort((a,b) => Number(b.score) - Number(a.score));
+      const putra = sorted.filter(a => a.gender === "Putra");
+      const putri = sorted.filter(a => a.gender === "Putri");
+      const today = new Date().toLocaleDateString("id-ID", { weekday:"long", day:"numeric", month:"long", year:"numeric" });
+
+      const tableHtml = (arr, gender) => {
+        if(arr.length === 0) return `<p style="text-align:center;color:#888;margin:14px 0">Belum ada data ${gender}.</p>`;
+        return `<table>
+          <thead><tr><th style="width:50px">No</th><th>Nama Atlet</th><th>Asal Sekolah</th><th>Wilayah</th><th style="width:110px;text-align:right">Nilai Akhir</th></tr></thead>
+          <tbody>${arr.map((it, i) => `<tr>
+            <td style="text-align:center">${i+1}</td>
+            <td>${escapeHtml(it.name)}</td>
+            <td>${escapeHtml(it.school)}</td>
+            <td>${escapeHtml(it.region)}</td>
+            <td style="text-align:right;font-weight:bold">${fmt(it.score)}</td>
+          </tr>`).join("")}</tbody>
+        </table>`;
+      };
+
+      const html = `<!doctype html><html lang="id"><head>
+        <meta charset="utf-8"><title>Rekap Nilai O2SN Senam</title>
+        <style>
+          @page { size: A4 landscape; margin: 12mm; }
+          body { font-family: Arial, Helvetica, sans-serif; color:#000; margin:0; padding:0; font-size:11pt; }
+          h1 { font-size:16pt; margin:0 0 4px; text-align:center; }
+          h2 { font-size:13pt; margin:14px 0 6px; padding-bottom:4px; border-bottom:2px solid #000; }
+          .sub { text-align:center; font-size:10pt; color:#444; margin-bottom:14px; }
+          table { width:100%; border-collapse:collapse; margin-bottom:8px; }
+          th, td { border:1px solid #888; padding:6px 8px; font-size:10pt; }
+          th { background:#eee; text-align:left; font-weight:bold; }
+          .footer { margin-top:18px; text-align:center; font-size:9pt; color:#555; border-top:1px solid #888; padding-top:6px; }
+          @media print { body { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+        </style>
+      </head><body>
+        <h1>REKAP NILAI O2SN SENAM — PERORANGAN SERBA BISA</h1>
+        <div class="sub">Cabang Olahraga Senam · Jenjang SD/MI Tingkat Provinsi DKI Jakarta · Dicetak ${today}</div>
+        <h2>🤸‍♂️ Nomor Putra (${putra.length} atlet)</h2>
+        ${tableHtml(putra, "Putra")}
+        <h2>🤸‍♀️ Nomor Putri (${putri.length} atlet)</h2>
+        ${tableHtml(putri, "Putri")}
+        <div class="footer">© 2026 KKG PJOK Provinsi DKI Jakarta × Gurumasakini. Hak cipta dilindungi.</div>
+        <script>window.onload = () => setTimeout(() => window.print(), 200);<\/script>
+      </body></html>`;
+
+      const w = window.open("", "_blank", "width=1024,height=768");
+      if(!w){ toast("Browser memblokir pop-up. Izinkan pop-up untuk situs ini lalu coba lagi.", "error"); return; }
+      w.document.open();
+      w.document.write(html);
+      w.document.close();
     }
 
     /* ============================================================
@@ -1748,9 +2090,17 @@
     // nilai akhir tunggal — tidak ada preview terpisah
 
     // Export & print
+    el("btnExportXlsx").addEventListener("click", handleExportXlsx);
     el("btnExportCsv").addEventListener("click", handleExportCsv);
     el("btnExportJson").addEventListener("click", handleExportJson);
     el("btnPrintPublic").addEventListener("click", handlePrintPublic);
+
+    // Import/Export Excel (di menu Data Atlet)
+    el("btnDownloadTemplate").addEventListener("click", handleDownloadTemplate);
+    el("btnImportExcel").addEventListener("click", handleImportExcel);
+    el("importFileInput").addEventListener("change", handleImportFileChange);
+    el("importCancel").addEventListener("click", () => el("importOverlay").classList.remove("show"));
+    el("importConfirm").addEventListener("click", confirmImport);
 
     // Konfigurasi
     el("configForm").addEventListener("submit", handleConfigSubmit);
