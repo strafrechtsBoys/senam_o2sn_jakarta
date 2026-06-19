@@ -338,6 +338,30 @@
     .embargo h2{margin:6px 0;font-size:20px;letter-spacing:-.025em;color:#5a3900}
     .embargo p{margin:0;font-size:13px;line-height:1.55;color:#8a5800}
 
+    /* ============ BANNER PERINGATAN SETUP ============ */
+    .setup-warning{
+      margin:10px auto 0;
+      max-width:1180px;
+      padding:12px 16px;
+      background:#fff4ed;
+      border:1px solid #ffd0b0;
+      border-left:4px solid #ea580c;
+      border-radius:14px;
+      color:#7a3b0e;
+      font-size:13px;
+      line-height:1.5;
+      display:none;
+    }
+    .setup-warning.show{display:block}
+    .setup-warning strong{color:#9a3500}
+    .setup-warning code{
+      background:rgba(154,53,0,.10);
+      padding:1px 6px;
+      border-radius:5px;
+      font-family:ui-monospace,monospace;
+      font-size:12px;
+    }
+
     /* ============ FOOTER ============ */
     .footer{
       margin-top:auto;
@@ -619,6 +643,11 @@
        PUBLIC VIEW
   ===================================================== -->
   <div class="public-wrap" id="publicWrap">
+    <div class="setup-warning" id="setupWarning">
+      ⚠️ <strong>Setup Belum Selesai —</strong> Backend Google Apps Script belum tersambung.
+      Buka file <code>senam.html</code>, cari baris <code>const GAS_URL = "..."</code>, ganti dengan URL Web App Apps Script Anda.
+      Panduan lengkap ada di <code>README_DEPLOY.md</code>.
+    </div>
     <main class="app">
       <section class="hero">
         <a href="#" class="admin-link" id="adminLink" title="Masuk Mode Admin">🔐 Admin</a>
@@ -987,6 +1016,7 @@
      * Lihat README_DEPLOY.md langkah 6.
      * ============================================================ */
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzcYz92K-VYzuZlyMQpFh0o4pxAsPnnFVB-ISTzI_vKAMFtRD_-xbAH-5QwsgrlJB0b/exec";
+    const IS_CONFIGURED = GAS_URL && !GAS_URL.includes("PASTE_URL") && GAS_URL.startsWith("http");
 
     /* ============================================================
      * STATE
@@ -1036,10 +1066,20 @@
         el("confirmTitle").textContent = title || "Konfirmasi";
         el("confirmMessage").textContent = message || "";
         el("confirmYes").textContent = label || "Ya, lanjutkan";
+        // Sembunyikan tombol Batal kalau ini info-only (label "Mengerti", "OK", "Tutup")
+        const isInfo = /mengerti|^ok$|tutup/i.test(label || "");
+        el("confirmNo").style.display = isInfo ? "none" : "";
+        el("confirmYes").className = isInfo ? "btn primary" : "btn red";
         el("confirmOverlay").classList.add("show");
         const yes = el("confirmYes"), no = el("confirmNo");
-        const done = (v) => { el("confirmOverlay").classList.remove("show");
-          yes.removeEventListener("click", oy); no.removeEventListener("click", on); resolve(v); };
+        const done = (v) => {
+          el("confirmOverlay").classList.remove("show");
+          // Reset tombol agar pemakaian berikutnya normal
+          el("confirmNo").style.display = "";
+          el("confirmYes").className = "btn red";
+          yes.removeEventListener("click", oy); no.removeEventListener("click", on);
+          resolve(v);
+        };
         const oy = () => done(true), on = () => done(false);
         yes.addEventListener("click", oy); no.addEventListener("click", on);
       });
@@ -1635,6 +1675,16 @@
     }
 
     async function tryLogin(){
+      // Deteksi dini: kalau GAS_URL belum diisi, jangan tampilkan login modal
+      if(!IS_CONFIGURED){
+        await showConfirm(
+          "⚠️ Setup Belum Selesai",
+          "Backend Google Apps Script belum tersambung. Buka file senam.html, cari baris 'const GAS_URL = \"...\"' di awal <script>, lalu ganti dengan URL Web App Apps Script Anda. Panduan lengkap ada di file README_DEPLOY.md.",
+          "Mengerti"
+        );
+        return false;
+      }
+
       const pw = await showLogin();
       if(pw === null) return false;
       setLoading(true);
@@ -1719,6 +1769,10 @@
     /* ============================================================
      * BOOT
      * ============================================================ */
+    if(!IS_CONFIGURED){
+      el("setupWarning").classList.add("show");
+      setConnStatus("offline", "Backend belum tersambung");
+    }
     fetchAll();
   </script>
 </body>
