@@ -1249,7 +1249,7 @@
               <div><strong>${escapeHtml(it.name)}</strong><span>${it.gender}</span></div></div></td>
             <td>${escapeHtml(it.school)}</td>
             <td>${escapeHtml(it.region)}</td>
-            <td class="score ${Number(it.score)?'':\'zero\'}">${fmt(it.score)}</td>
+            <td class="score ${Number(it.score) ? '' : 'zero'}">${fmt(it.score)}</td>
           </tr>`;
         }).join("");
 
@@ -1432,7 +1432,7 @@
             <div><strong>${escapeHtml(it.name)}</strong><span>${escapeHtml(it.region)}</span></div></div></td>
           <td><span class="chip ${it.gender.toLowerCase()}">${it.gender}</span></td>
           <td>${escapeHtml(it.school)}</td>
-          <td class="score ${Number(it.score)?'':\'zero\'}">${fmt(it.score)}</td>
+          <td class="score ${Number(it.score) ? '' : 'zero'}">${fmt(it.score)}</td>
           <td><button class="btn small primary" data-act="score" data-id="${it.id}">📝 Input</button></td>
         </tr>`;
       }).join("");
