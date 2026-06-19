@@ -2,9 +2,9 @@
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Portal O2SN SD - Senam</title>
-  <meta name="description" content="Portal pengumuman nilai O2SN SD Cabang Olahraga Senam - Perorangan Serba Bisa Putra dan Putri." />
+  <meta name="description" content="Portal Pengumuman Nilai O2SN Jenjang SD/MI Cabang Olahraga Senam Tingkat Provinsi DKI Jakarta." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -22,6 +22,7 @@
       --danger:#f04438;
       --shadow:0 16px 40px rgba(23,32,51,.10);
       --radius:22px;
+      --sidebar-w:248px;
     }
 
     *{box-sizing:border-box}
@@ -29,822 +30,915 @@
     body{
       margin:0;
       min-height:100vh;
+      display:flex;
+      flex-direction:column;
       font-family:"Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
         radial-gradient(circle at top left, rgba(49,87,246,.16), transparent 32%),
         radial-gradient(circle at top right, rgba(22,184,142,.13), transparent 30%),
         var(--bg);
       color:var(--ink);
+      -webkit-font-smoothing:antialiased;
     }
 
-    button,input,select{font:inherit}
+    button,input,select,textarea{font:inherit;font-family:inherit}
     button{cursor:pointer}
+    textarea{resize:vertical}
+
+    /* ============ LAYOUT WRAPPERS ============ */
     .app{
       width:min(1180px, calc(100% - 28px));
       margin:0 auto;
-      padding:20px 0 42px;
+      padding:20px 0 28px;
     }
 
+    /* ============ PUBLIC HERO ============ */
     .hero{
       position:relative;
       overflow:hidden;
-      border-radius:30px;
-      padding:22px;
+      border-radius:28px;
+      padding:22px 24px;
       color:#fff;
       background:
         linear-gradient(135deg, rgba(19,32,76,.96), rgba(49,87,246,.94) 54%, rgba(22,184,142,.92)),
         linear-gradient(45deg, #18214a, #3157f6);
       box-shadow:var(--shadow);
     }
-
     .hero:before{
-      content:"";
-      position:absolute;
-      width:420px;
-      height:420px;
-      border-radius:999px;
-      right:-150px;
-      top:-180px;
-      background:rgba(255,255,255,.13);
+      content:"";position:absolute;width:420px;height:420px;border-radius:999px;
+      right:-150px;top:-180px;background:rgba(255,255,255,.13);
     }
-
     .hero:after{
-      content:"";
-      position:absolute;
-      width:220px;
-      height:220px;
-      border-radius:999px;
-      left:42%;
-      bottom:-120px;
-      background:rgba(255,255,255,.10);
+      content:"";position:absolute;width:220px;height:220px;border-radius:999px;
+      left:42%;bottom:-120px;background:rgba(255,255,255,.10);
     }
-
     .hero-inner{
-      position:relative;
-      z-index:1;
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:18px;
-      align-items:center;
+      position:relative;z-index:1;
+      max-width:880px;
     }
-
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      width:max-content;
-      padding:8px 12px;
-      border-radius:999px;
-      color:#eaf0ff;
-      background:rgba(255,255,255,.13);
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 12px;border-radius:999px;
+      color:#eaf0ff;background:rgba(255,255,255,.13);
       border:1px solid rgba(255,255,255,.24);
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.02em;
-      text-transform:uppercase;
+      font-size:11px;font-weight:800;letter-spacing:.02em;
+      text-transform:uppercase;line-height:1.3;
     }
-
     .hero h1{
-      margin:12px 0 8px;
-      font-size:clamp(24px, 4vw, 44px);
-      line-height:1.02;
-      letter-spacing:-.045em;
+      margin:14px 0 0;
+      font-size:clamp(22px, 3.6vw, 38px);
+      line-height:1.05;letter-spacing:-.045em;
     }
-
-    .hero p{
-      margin:0;
-      max-width:780px;
-      color:rgba(255,255,255,.82);
-      font-size:14px;
-      line-height:1.65;
-    }
-
-    .sync-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      margin-top:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.22);
-      color:#eaf0ff;
-      font-size:11px;
-      font-weight:700;
-      letter-spacing:.02em;
-    }
-    .sync-badge .dot{
-      width:7px;height:7px;border-radius:50%;
-      background:var(--accent);
-      box-shadow:0 0 0 0 rgba(22,184,142,.55);
-      animation:pulse 2.4s infinite;
-    }
-    .sync-badge.offline .dot{background:#f04438;animation:none}
-    .sync-badge.syncing .dot{background:#ffb020;animation:pulse 1s infinite}
-    @keyframes pulse{
-      0%{box-shadow:0 0 0 0 rgba(22,184,142,.55)}
-      70%{box-shadow:0 0 0 10px rgba(22,184,142,0)}
-      100%{box-shadow:0 0 0 0 rgba(22,184,142,0)}
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:flex-end;
-    }
-
-    .btn{
-      border:0;
-      border-radius:15px;
-      padding:11px 14px;
-      color:var(--ink);
-      background:#fff;
-      font-weight:800;
-      box-shadow:0 10px 22px rgba(0,0,0,.12);
+    /* Link admin kecil di kanan atas */
+    .admin-link{
+      position:absolute;top:14px;right:16px;z-index:2;
+      display:inline-flex;align-items:center;gap:5px;
+      padding:6px 11px;border-radius:999px;
+      background:rgba(255,255,255,.16);
+      border:1px solid rgba(255,255,255,.28);
+      color:#fff;text-decoration:none;
+      font-size:11px;font-weight:700;letter-spacing:.02em;
       transition:.2s ease;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      white-space:nowrap;
     }
+    .admin-link:hover{background:rgba(255,255,255,.28)}
 
-    .btn:hover{transform:translateY(-1px)}
-    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
-    .btn.primary{background:#10182f;color:#fff}
-    .btn.soft{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.24);box-shadow:none}
-    .btn.ghost{background:#eef2ff;color:#243bce;box-shadow:none}
-    .btn.green{background:#eafaf5;color:#087a60;box-shadow:none}
-    .btn.red{background:#fff0ee;color:#bf2d25;box-shadow:none}
-    .btn.small{padding:8px 10px;border-radius:12px;font-size:12px}
-
-    .tabs{
-      display:flex;
-      gap:10px;
-      margin:16px 0;
-      overflow:auto;
-      padding-bottom:2px;
-    }
-
-    .tab{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.76);
-      color:var(--muted);
-      border-radius:999px;
-      padding:10px 14px;
-      font-weight:800;
-      white-space:nowrap;
-    }
-
-    .tab.active{
+    /* ============ MARQUEE / RUNNING TEXT ============ */
+    .marquee{
+      margin-top:14px;
+      background:#10182f;
       color:#fff;
-      border-color:transparent;
-      background:linear-gradient(135deg, var(--primary), var(--primary-2));
-      box-shadow:0 10px 24px rgba(49,87,246,.23);
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(12,1fr);
-      gap:14px;
-    }
-
-    .card{
-      background:rgba(255,255,255,.84);
-      border:1px solid rgba(231,235,243,.9);
-      border-radius:var(--radius);
-      box-shadow:0 10px 28px rgba(23,32,51,.06);
-      backdrop-filter:blur(8px);
-    }
-
-    .stats{margin:18px 0}
-    .stat{
-      grid-column:span 3;
-      padding:17px;
-      min-height:104px;
+      border-radius:16px;
+      padding:12px 0;
       overflow:hidden;
       position:relative;
+      box-shadow:0 6px 18px rgba(23,32,51,.10);
+      display:flex;align-items:center;
     }
-
-    .stat:after{
-      content:"";
-      position:absolute;
-      width:90px;
-      height:90px;
-      border-radius:50%;
-      right:-28px;
-      bottom:-28px;
-      background:rgba(49,87,246,.08);
-    }
-
-    .stat .label{
-      color:var(--muted);
-      font-size:12px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.03em;
-    }
-
-    .stat .value{
-      margin-top:8px;
-      font-size:28px;
+    .marquee-label{
+      flex:0 0 auto;
+      padding:0 14px 0 18px;
       font-weight:900;
-      letter-spacing:-.04em;
+      font-size:11px;letter-spacing:.06em;
+      color:#ffb020;
+      text-transform:uppercase;
+      border-right:1px solid rgba(255,255,255,.18);
+      margin-right:14px;
+      white-space:nowrap;
     }
-
-    .stat .sub{
-      margin-top:6px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.45;
+    .marquee-track{
+      flex:1 1 auto;
+      overflow:hidden;
+      position:relative;
+      mask-image:linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
     }
-
-    .panel{
-      padding:16px;
-    }
-
-    .panel-head{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:14px;
-    }
-
-    .panel-title h2{
-      margin:0;
-      font-size:18px;
-      letter-spacing:-.025em;
-    }
-
-    .panel-title p{
-      margin:6px 0 0;
-      color:var(--muted);
+    .marquee-content{
+      display:inline-block;
+      white-space:nowrap;
+      animation:scroll-left 38s linear infinite;
       font-size:13px;
-      line-height:1.45;
+      padding-left:100%;
+    }
+    .marquee-content span{padding-right:80px}
+    @keyframes scroll-left{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(-100%)}
     }
 
-    .filters{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
+    /* ============ STATS ============ */
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin:18px 0 14px;
+    }
+    .stat{
+      background:rgba(255,255,255,.86);
+      border:1px solid rgba(231,235,243,.9);
+      border-radius:var(--radius);
+      box-shadow:0 10px 26px rgba(23,32,51,.06);
+      padding:16px;position:relative;overflow:hidden;min-height:100px;
+    }
+    .stat:after{
+      content:"";position:absolute;width:80px;height:80px;border-radius:50%;
+      right:-24px;bottom:-24px;background:rgba(49,87,246,.08);
+    }
+    .stat .label{
+      color:var(--muted);font-size:11px;font-weight:800;
+      text-transform:uppercase;letter-spacing:.04em;
+    }
+    .stat .value{
+      margin-top:8px;font-size:26px;font-weight:900;letter-spacing:-.04em;
+    }
+    .stat .sub{
+      margin-top:4px;font-size:11px;color:var(--muted);line-height:1.4;
     }
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:7px;
+    /* ============ CARDS / PANEL ============ */
+    .card{
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(231,235,243,.9);
+      border-radius:var(--radius);
+      box-shadow:0 10px 26px rgba(23,32,51,.06);
     }
+    .panel{padding:16px}
+    .panel-head{
+      display:flex;align-items:flex-start;justify-content:space-between;
+      gap:14px;margin-bottom:14px;flex-wrap:wrap;
+    }
+    .panel-title h2{margin:0;font-size:17px;letter-spacing:-.025em}
+    .panel-title p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
 
+    .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+    .field{display:flex;flex-direction:column;gap:6px}
     .field label{
-      font-size:11px;
-      font-weight:900;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:.035em;
+      font-size:10px;font-weight:900;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.04em;
     }
-
-    input,select{
+    input,select,textarea{
       width:100%;
       border:1px solid var(--line);
-      border-radius:14px;
-      background:#fff;
-      color:var(--ink);
-      padding:11px 12px;
-      outline:none;
-      min-height:43px;
+      border-radius:12px;
+      background:#fff;color:var(--ink);
+      padding:10px 12px;outline:none;
+      min-height:42px;font-size:14px;
     }
-
-    input:focus,select:focus{
+    textarea{min-height:90px;line-height:1.5}
+    input:focus,select:focus,textarea:focus{
       border-color:rgba(49,87,246,.55);
       box-shadow:0 0 0 4px rgba(49,87,246,.10);
     }
+    .search{min-width:220px}
 
-    .search{min-width:240px}
-    .main-table-wrap{
+    /* ============ BUTTONS ============ */
+    .btn{
+      border:0;border-radius:13px;
+      padding:10px 14px;
+      color:var(--ink);background:#fff;
+      font-weight:800;font-size:13px;
+      box-shadow:0 8px 18px rgba(0,0,0,.10);
+      transition:.18s ease;
+      display:inline-flex;align-items:center;gap:7px;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+    .btn.primary{background:#10182f;color:#fff}
+    .btn.ghost{background:#eef2ff;color:#243bce;box-shadow:none}
+    .btn.green{background:#eafaf5;color:#087a60;box-shadow:none}
+    .btn.red{background:#fff0ee;color:#bf2d25;box-shadow:none}
+    .btn.warning{background:#fff7e3;color:#a06000;box-shadow:none}
+    .btn.small{padding:7px 10px;border-radius:10px;font-size:12px}
+    .btn.block{width:100%;justify-content:center}
+
+    /* ============ TABEL ============ */
+    .table-wrap{
       overflow:auto;
       border:1px solid var(--line);
-      border-radius:18px;
+      border-radius:16px;
       background:#fff;
+      -webkit-overflow-scrolling:touch;
     }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      min-width:820px;
-    }
-
+    table{width:100%;border-collapse:collapse;min-width:760px}
     th,td{
-      padding:12px 12px;
-      text-align:left;
+      padding:11px 12px;text-align:left;
       border-bottom:1px solid var(--line);
-      vertical-align:middle;
-      font-size:13px;
+      vertical-align:middle;font-size:13px;
     }
-
     th{
-      position:sticky;
-      top:0;
-      z-index:2;
-      background:#f8faff;
-      color:#58647a;
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-      font-weight:900;
+      position:sticky;top:0;z-index:2;
+      background:#f8faff;color:#58647a;
+      font-size:11px;text-transform:uppercase;
+      letter-spacing:.04em;font-weight:900;
     }
-
     tr:last-child td{border-bottom:0}
     tbody tr:hover{background:#fbfcff}
+
     .rank{
-      display:inline-grid;
-      place-items:center;
-      width:34px;
-      height:34px;
-      border-radius:12px;
-      background:#eef2ff;
-      color:#243bce;
-      font-weight:900;
+      display:inline-grid;place-items:center;
+      width:32px;height:32px;border-radius:10px;
+      background:#eef2ff;color:#243bce;font-weight:900;font-size:13px;
     }
     .rank.gold{background:#fff5d6;color:#9a6700}
     .rank.silver{background:#eef0f5;color:#536071}
     .rank.bronze{background:#fff0e8;color:#a94d19}
 
-    .athlete{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:190px;
-    }
-
+    .athlete{display:flex;align-items:center;gap:10px;min-width:180px}
     .avatar{
-      width:38px;
-      height:38px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      flex:0 0 auto;
-      color:#fff;
-      font-weight:900;
+      width:36px;height:36px;border-radius:12px;
+      display:grid;place-items:center;flex:0 0 auto;
+      color:#fff;font-weight:900;font-size:13px;
       background:linear-gradient(135deg, var(--primary), var(--primary-2));
     }
-
     .avatar.girl{background:linear-gradient(135deg, #fb4f8f, #7b4dff)}
-    .athlete strong{display:block;font-size:13px}
+    .athlete strong{display:block;font-size:13px;line-height:1.2}
     .athlete span{display:block;margin-top:2px;font-size:11px;color:var(--muted)}
+
     .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      border-radius:999px;
-      padding:6px 9px;
-      font-size:11px;
-      font-weight:900;
-      white-space:nowrap;
+      display:inline-flex;align-items:center;gap:5px;
+      border-radius:999px;padding:5px 9px;
+      font-size:11px;font-weight:900;white-space:nowrap;
     }
     .chip.putra{background:#eaf0ff;color:#2847c5}
     .chip.putri{background:#ffeaf2;color:#c12f6f}
-    .score{
-      font-weight:900;
-      letter-spacing:-.02em;
-    }
-    .score.total{
-      color:#087a60;
-      font-size:15px;
-    }
+    .chip.unscored{background:#fff7e3;color:#8a5800}
+    .chip.scored{background:#eafaf5;color:#087a60}
+
+    .score{font-weight:900;letter-spacing:-.02em}
+    .score.total{color:#087a60;font-size:15px}
+    .score.zero{color:#aab2c1;font-weight:700}
     .muted{color:var(--muted)}
 
-    .public-view,.admin-view{display:none}
-    .public-view.active,.admin-view.active{display:block}
+    .empty{padding:28px;text-align:center;color:var(--muted);font-size:13px}
 
-    .admin-layout{
-      display:grid;
-      grid-template-columns:380px 1fr;
-      gap:14px;
-      align-items:start;
+    /* ============ GENDER SECTIONS ============ */
+    .gender-list{display:grid;gap:18px}
+    .gender-section{display:grid;gap:10px}
+    .gender-title{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:13px 16px;border-radius:16px;border:1px solid var(--line);background:#fff;
     }
+    .gender-title h3{margin:0;font-size:15px;letter-spacing:-.02em}
+    .gender-title p{margin:4px 0 0;color:var(--muted);font-size:11px;font-weight:800}
+    .putra-title{background:linear-gradient(135deg,#f8faff,#eef3ff)}
+    .putri-title{background:linear-gradient(135deg,#fff8fb,#ffeef5)}
 
-    .admin-form{
-      display:grid;
-      gap:12px;
-    }
-
-    .two{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    .admin-note{
-      padding:12px;
-      border-radius:16px;
-      background:#f8faff;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.55;
-      border:1px dashed #ccd5f2;
-    }
-
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .empty{
-      padding:24px;
-      text-align:center;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .toast{
-      position:fixed;
-      right:16px;
-      bottom:16px;
-      z-index:200;
-      max-width:320px;
-      padding:12px 14px;
-      border-radius:16px;
-      background:#10182f;
-      color:#fff;
-      box-shadow:var(--shadow);
-      transform:translateY(24px);
-      opacity:0;
-      pointer-events:none;
-      transition:.24s ease;
-      font-size:13px;
-      line-height:1.45;
-    }
-    .toast.show{
-      transform:translateY(0);
-      opacity:1;
-    }
-    .toast.error{background:#7a1d18}
-
+    /* ============ MOBILE CARDS ============ */
     .mobile-card-list{display:none}
-
-    .footer{
-      margin-top:18px;
-      text-align:center;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.55;
+    .result-card{
+      border:1px solid var(--line);background:#fff;
+      border-radius:16px;padding:12px;
     }
+    .result-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .result-mid{
+      display:grid;grid-template-columns:repeat(2,1fr);
+      gap:7px;margin-top:10px;
+    }
+    .mini-score{background:#f8faff;border-radius:10px;padding:8px}
+    .mini-score span{
+      display:block;color:var(--muted);font-size:10px;
+      font-weight:900;text-transform:uppercase;
+    }
+    .mini-score strong{display:block;margin-top:2px;font-size:13px}
+    .result-total{
+      margin-top:10px;display:flex;align-items:center;
+      justify-content:space-between;
+      border-top:1px solid var(--line);padding-top:10px;
+    }
+
+    /* ============ EMBARGO BANNER ============ */
+    .embargo{
+      background:linear-gradient(135deg,#fff7e3,#ffeac6);
+      border:1px solid #ffd485;
+      border-radius:20px;
+      padding:28px 22px;
+      text-align:center;
+      color:#8a5800;
+    }
+    .embargo .icon{font-size:42px;margin-bottom:6px}
+    .embargo h2{margin:6px 0;font-size:20px;letter-spacing:-.025em;color:#5a3900}
+    .embargo p{margin:0;font-size:13px;line-height:1.55;color:#8a5800}
+
+    /* ============ FOOTER ============ */
+    .footer{
+      margin-top:auto;
+      padding:16px 14px 20px;
+      text-align:center;
+      color:var(--muted);font-size:11.5px;line-height:1.55;
+      border-top:1px solid var(--line);
+      background:rgba(255,255,255,.55);
+    }
+
+    /* ============ TOAST ============ */
+    .toast{
+      position:fixed;right:16px;bottom:16px;z-index:300;
+      max-width:340px;padding:11px 14px;border-radius:14px;
+      background:#10182f;color:#fff;box-shadow:var(--shadow);
+      transform:translateY(24px);opacity:0;pointer-events:none;
+      transition:.24s ease;font-size:13px;line-height:1.45;
+    }
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast.error{background:#7a1d18}
+    .toast.success{background:#0a6f56}
 
     /* ============ MODAL & OVERLAY ============ */
     .overlay{
-      position:fixed;
-      inset:0;
+      position:fixed;inset:0;
       background:rgba(13,18,38,.55);
       backdrop-filter:blur(4px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:150;
-      padding:18px;
+      display:none;align-items:center;justify-content:center;
+      z-index:250;padding:18px;
     }
     .overlay.show{display:flex}
-
     .modal{
-      background:#fff;
-      border-radius:24px;
-      box-shadow:0 30px 80px rgba(0,0,0,.32);
-      width:min(420px, 100%);
-      padding:22px;
+      background:#fff;border-radius:22px;
+      box-shadow:0 30px 70px rgba(0,0,0,.32);
+      width:min(440px,100%);padding:22px;
       animation:popin .22s ease;
+      max-height:90vh;overflow:auto;
     }
-    @keyframes popin{
-      from{transform:scale(.94) translateY(8px);opacity:0}
-      to{transform:scale(1) translateY(0);opacity:1}
-    }
-    .modal h3{
-      margin:0 0 6px;
-      font-size:18px;
-      letter-spacing:-.02em;
-    }
-    .modal p{
-      margin:0 0 14px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-    }
-    .modal .actions{justify-content:flex-end;margin-top:14px}
+    @keyframes popin{from{transform:scale(.94) translateY(8px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+    .modal h3{margin:0 0 6px;font-size:17px;letter-spacing:-.02em}
+    .modal p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}
+    .modal .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap}
 
     .loading{
-      position:fixed;
-      inset:0;
-      background:rgba(245,247,251,.7);
-      backdrop-filter:blur(2px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:140;
+      position:fixed;inset:0;
+      background:rgba(245,247,251,.7);backdrop-filter:blur(2px);
+      display:none;align-items:center;justify-content:center;z-index:240;
     }
     .loading.show{display:flex}
     .spinner{
-      width:42px;height:42px;
-      border-radius:50%;
-      border:4px solid #e7ebf3;
-      border-top-color:var(--primary);
+      width:40px;height:40px;border-radius:50%;
+      border:4px solid #e7ebf3;border-top-color:var(--primary);
       animation:spin .8s linear infinite;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    .locked-notice{
-      padding:32px 22px;
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.6;
-    }
-    .locked-notice .lock-icon{
-      font-size:42px;
-      margin-bottom:8px;
-    }
-
-    @media (max-width:900px){
-      .hero-inner{grid-template-columns:1fr}
-      .hero-actions{justify-content:flex-start}
-      .stat{grid-column:span 6}
-      .admin-layout{grid-template-columns:1fr}
-    }
-
-    @media (max-width:620px){
-      .app{width:min(100% - 18px, 1180px);padding-top:9px}
-      .hero{border-radius:24px;padding:18px}
-      .hero p{font-size:13px}
-      .stat{grid-column:span 6;padding:14px;border-radius:18px;min-height:94px}
-      .stat .value{font-size:23px}
-      .panel{padding:12px;border-radius:18px}
-      .panel-head{display:block}
-      .filters{margin-top:12px}
-      .search{min-width:100%}
-      .two{grid-template-columns:1fr}
-      .main-table-wrap.mobile-hide{display:none}
-      .mobile-card-list{
-        display:grid;
-        gap:10px;
-      }
-      .result-card{
-        border:1px solid var(--line);
-        background:#fff;
-        border-radius:18px;
-        padding:12px;
-      }
-      .result-top{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap:10px;
-      }
-      .result-mid{
-        display:grid;
-        grid-template-columns:repeat(2,1fr);
-        gap:8px;
-        margin-top:10px;
-      }
-      .mini-score{
-        background:#f8faff;
-        border-radius:14px;
-        padding:9px;
-      }
-      .mini-score span{
-        display:block;
-        color:var(--muted);
-        font-size:10px;
-        font-weight:900;
-        text-transform:uppercase;
-      }
-      .mini-score strong{
-        display:block;
-        margin-top:3px;
-        font-size:14px;
-      }
-      .result-total{
-        margin-top:10px;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        border-top:1px solid var(--line);
-        padding-top:10px;
-      }
-      .btn{width:auto}
-    }
-
-    .gender-list{
-      display:grid;
-      gap:18px;
-    }
-
-    .gender-section{
-      display:grid;
-      gap:12px;
-    }
-
-    .gender-title{
+    /* ============================================================
+     * ADMIN SHELL (Sidebar Layout)
+     * ============================================================ */
+    /* public-wrap mengisi seluruh tinggi layar, footer otomatis tertekan ke bawah */
+    .public-wrap{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:14px 16px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      background:#fff;
+      flex-direction:column;
+      min-height:100vh;
+      flex:1;
+    }
+    .public-wrap.hidden{display:none}
+
+    /* .app mengembang mengisi sisa ruang di atas footer */
+    .public-wrap > .app{flex:1}
+
+    /* footer selalu di bagian paling bawah */
+    .public-wrap > .footer{margin-top:auto}
+
+    .admin-shell{
+      display:none;
+      min-height:100vh;
+      grid-template-columns:var(--sidebar-w) 1fr;
+    }
+    .admin-shell.active{display:grid}
+
+    .sidebar{
+      background:linear-gradient(180deg,#10182f,#1a2347);
+      color:#eef2ff;
+      padding:18px 14px;
+      display:flex;flex-direction:column;gap:14px;
+      position:sticky;top:0;
+      height:100vh;
+      overflow-y:auto;
+    }
+    .sidebar-header{
+      padding:6px 8px 14px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .sidebar-header .brand{
+      font-size:11px;font-weight:800;letter-spacing:.08em;
+      color:#9ab1ff;text-transform:uppercase;
+    }
+    .sidebar-header .title{
+      margin-top:4px;font-size:15px;font-weight:800;
+      letter-spacing:-.02em;line-height:1.25;
     }
 
-    .gender-title h3{
-      margin:0;
-      font-size:16px;
-      letter-spacing:-.02em;
+    .sidebar-menu{display:flex;flex-direction:column;gap:4px;flex:1}
+    .menu-item{
+      display:flex;align-items:center;gap:10px;
+      padding:11px 12px;
+      border-radius:12px;
+      background:transparent;border:0;
+      color:#cfd8ff;text-align:left;
+      font-size:13px;font-weight:700;
+      transition:.15s ease;width:100%;
+    }
+    .menu-item:hover{background:rgba(255,255,255,.06);color:#fff}
+    .menu-item.active{
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;
+      box-shadow:0 8px 20px rgba(49,87,246,.30);
+    }
+    .menu-item .ico{font-size:16px}
+
+    .sidebar-footer{
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:12px;
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .conn-indicator{
+      display:flex;align-items:center;gap:8px;
+      padding:9px 11px;border-radius:11px;
+      background:rgba(255,255,255,.06);
+      font-size:11.5px;font-weight:700;
+    }
+    .conn-indicator .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 0 rgba(22,184,142,.6);
+      animation:pulse 2.4s infinite;
+    }
+    .conn-indicator.offline .dot{background:#f04438;animation:none}
+    .conn-indicator.syncing .dot{background:#ffb020;animation:pulse 1s infinite}
+    .conn-indicator.offline{color:#ffd4d0}
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(22,184,142,.6)}
+      70%{box-shadow:0 0 0 8px rgba(22,184,142,0)}
+      100%{box-shadow:0 0 0 0 rgba(22,184,142,0)}
     }
 
-    .gender-title p{
-      margin:5px 0 0;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:800;
+    .admin-content{
+      padding:22px;
+      overflow-x:hidden;
+      max-width:100%;
+    }
+    .admin-content > .section{display:none}
+    .admin-content > .section.active{display:block}
+    .section-header{
+      margin-bottom:16px;
+    }
+    .section-header h1{
+      margin:0;font-size:22px;letter-spacing:-.03em;
+    }
+    .section-header p{
+      margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.5;
     }
 
-    .putra-title{
-      background:linear-gradient(135deg, #f8faff, #eef3ff);
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+    .admin-form{display:grid;gap:11px}
+
+    .admin-note{
+      padding:11px 12px;border-radius:13px;
+      background:#f8faff;color:var(--muted);
+      font-size:12px;line-height:1.55;
+      border:1px dashed #ccd5f2;
+    }
+    .actions{display:flex;flex-wrap:wrap;gap:7px}
+
+    /* mobile sidebar toggle */
+    .sidebar-toggle{
+      display:none;
+      position:fixed;
+      bottom:18px;right:18px;
+      z-index:120;
+      width:54px;height:54px;border-radius:50%;
+      border:0;background:#10182f;color:#fff;
+      font-size:22px;
+      box-shadow:0 14px 30px rgba(0,0,0,.30);
+    }
+    .sidebar-backdrop{
+      display:none;
+      position:fixed;inset:0;
+      background:rgba(13,18,38,.55);
+      z-index:90;
+    }
+    .sidebar-backdrop.show{display:block}
+
+    /* ============================================================
+     * RESPONSIVE
+     * ============================================================ */
+
+    /* Tablet */
+    @media (max-width:1024px){
+      :root{--sidebar-w:220px}
+      .stats{grid-template-columns:repeat(4,1fr)}
+      .grid-2{grid-template-columns:1fr}
     }
 
-    .putri-title{
-      background:linear-gradient(135deg, #fff8fb, #ffeef5);
+    /* Tablet-medium */
+    @media (max-width:900px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .two{grid-template-columns:1fr 1fr}
     }
 
+    /* Mobile */
+    @media (max-width:720px){
+      .app{padding-top:10px}
+      .hero{border-radius:22px;padding:18px 18px}
+      .hero h1{font-size:22px}
+      .badge{font-size:10px;padding:6px 10px}
+      .admin-link{font-size:10px;padding:5px 9px;top:12px;right:12px}
+      .marquee{margin-top:10px;border-radius:14px}
+      .marquee-label{font-size:10px;padding:0 10px 0 14px;margin-right:10px}
+      .marquee-content{font-size:12px;animation-duration:30s}
+      .stat{padding:13px;border-radius:18px;min-height:88px}
+      .stat .value{font-size:22px}
+      .stat .label{font-size:10px}
+      .panel{padding:14px;border-radius:18px}
+      .panel-head{flex-direction:column;align-items:stretch}
+      .filters{width:100%}
+      .search{min-width:100%;flex:1}
+      .field.search{flex:1}
+      .two{grid-template-columns:1fr}
+      .table-wrap{display:none}
+      .mobile-card-list{display:grid;gap:10px}
+      .btn{font-size:12px;padding:9px 12px}
+      .admin-shell{grid-template-columns:1fr}
+      .sidebar{
+        position:fixed;
+        top:0;left:0;
+        height:100vh;
+        width:240px;
+        z-index:100;
+        transform:translateX(-100%);
+        transition:transform .25s ease;
+        box-shadow:0 0 40px rgba(0,0,0,.25);
+      }
+      .sidebar.open{transform:translateX(0)}
+      .sidebar-toggle{display:block}
+      .admin-content{padding:16px;padding-bottom:90px}
+      .section-header h1{font-size:18px}
+    }
+
+    @media (max-width:420px){
+      .stats{grid-template-columns:1fr 1fr;gap:8px}
+      .stat{padding:11px}
+      .stat .value{font-size:20px}
+      .hero h1{font-size:19px;line-height:1.1}
+      .badge{font-size:9.5px}
+    }
+
+    /* ============ PRINT ============ */
     @media print{
       body{background:#fff}
-      .tabs,.hero-actions,.filters,.admin-view,.footer,.overlay,.loading{display:none!important}
-      .public-view{display:block!important}
+      .marquee,.admin-link,.admin-shell,.sidebar-toggle,
+      .sidebar-backdrop,.overlay,.loading,.filters,.footer{display:none!important}
+      .public-wrap{display:block!important}
       .hero{box-shadow:none;color:#111;background:#fff;border:1px solid #ddd}
+      .hero h1,.badge{color:#111!important}
+      .badge{background:#eef2ff;border-color:#ccc}
       .card{box-shadow:none;border:1px solid #ddd}
+      table{min-width:0}
+      .mobile-card-list{display:none!important}
+      .table-wrap{display:block!important;overflow:visible;border:0}
     }
   </style>
 </head>
 <body>
-  <main class="app">
-    <section class="hero">
-      <div class="hero-inner">
-        <div>
-          <span class="badge">🏅 O2SN SD • Cabang Olahraga Senam</span>
+
+  <!-- ====================================================
+       PUBLIC VIEW
+  ===================================================== -->
+  <div class="public-wrap" id="publicWrap">
+    <main class="app">
+      <section class="hero">
+        <a href="#" class="admin-link" id="adminLink" title="Masuk Mode Admin">🔐 Admin</a>
+        <div class="hero-inner">
+          <span class="badge">🏅 O2SN JENJANG SD/MI/Sederajat • CABANG OLAHRAGA SENAM TINGKAT PROVINSI DKI JAKARTA</span>
           <h1>Portal Pengumuman Nilai<br>Perorangan Serba Bisa</h1>
-          <p>
-            Daftar nilai nomor putra dan putri Perorangan Serba Bisa. Data tersinkron langsung dari Google Sheets melalui Google Apps Script.
-          </p>
-          <span class="sync-badge" id="syncBadge">
-            <span class="dot"></span>
-            <span id="syncText">Menghubungkan…</span>
-          </span>
         </div>
-        <div class="hero-actions">
-          <button class="btn soft" id="btnRefresh" title="Ambil data terbaru">🔄 Refresh</button>
-          <button class="btn soft" onclick="window.print()">🖨️ Cetak</button>
-          <button class="btn soft" id="btnExportCsv">⬇️ Export CSV</button>
-          <button class="btn" id="btnGoAdmin">🔐 Mode Admin</button>
+      </section>
+
+      <!-- Running text -->
+      <div class="marquee" id="marqueeBar">
+        <div class="marquee-label">📢 INFORMASI</div>
+        <div class="marquee-track">
+          <div class="marquee-content" id="marqueeContent"><span>Memuat informasi…</span></div>
         </div>
       </div>
-    </section>
 
-    <nav class="tabs" aria-label="Navigasi portal">
-      <button class="tab active" data-view="public">📢 Pengumuman Nilai</button>
-      <button class="tab" data-view="admin">🔐 Admin Input Nilai</button>
-    </nav>
+      <!-- Konten utama publik -->
+      <div id="publicContent">
+        <!-- dirender oleh JS: stats + tabel atau embargo banner -->
+      </div>
+    </main>
 
-    <section class="public-view active" id="publicView">
-      <div class="grid stats">
-        <article class="card stat">
-          <div class="label">Total Atlet</div>
-          <div class="value" id="statTotal">0</div>
-          <div class="sub">Putra dan putri</div>
-        </article>
-        <article class="card stat">
-          <div class="label">Peserta Putra</div>
-          <div class="value" id="statPutra">0</div>
-          <div class="sub">Nomor perorangan serba bisa</div>
-        </article>
-        <article class="card stat">
-          <div class="label">Peserta Putri</div>
-          <div class="value" id="statPutri">0</div>
-          <div class="sub">Nomor perorangan serba bisa</div>
-        </article>
-        <article class="card stat">
-          <div class="label">Nilai Tertinggi</div>
-          <div class="value" id="statBest">0.000</div>
-          <div class="sub" id="statBestName">Belum ada data</div>
-        </article>
+    <footer class="footer">
+      © 2026 KKG PJOK Provinsi DKI Jakarta × Gurumasakini. Hak cipta dilindungi.
+    </footer>
+  </div>
+
+  <!-- ====================================================
+       ADMIN VIEW (Sidebar layout)
+  ===================================================== -->
+  <div class="admin-shell" id="adminShell">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">O2SN Senam · Admin</div>
+        <div class="title">Panel Manajemen Nilai</div>
       </div>
 
-      <section class="card panel">
-        <div class="panel-head">
-          <div class="panel-title">
-            <h2>📊 Daftar Nilai Perorangan Serba Bisa</h2>
-            <p>Data ditampilkan terpisah antara Putra dan Putri. Urutan dapat diubah berdasarkan total nilai.</p>
-          </div>
-          <div class="filters">
-            <div class="field">
-              <label>Urutan Nilai</label>
-              <select id="sortOrder">
-                <option value="desc">Tertinggi ke Terendah</option>
-                <option value="asc">Terendah ke Tertinggi</option>
-              </select>
-            </div>
-            <div class="field search">
-              <label>Cari Atlet/Sekolah</label>
-              <input id="searchInput" type="search" placeholder="Ketik nama, sekolah, kecamatan..." />
-            </div>
-          </div>
+      <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="menu-item active" data-menu="athletes">
+          <span class="ico">👥</span> Data Atlet
+        </button>
+        <button class="menu-item" data-menu="scores">
+          <span class="ico">📝</span> Input Nilai
+        </button>
+        <button class="menu-item" data-menu="export">
+          <span class="ico">🖨️</span> Print &amp; Export
+        </button>
+        <button class="menu-item" data-menu="config">
+          <span class="ico">⚙️</span> Konfigurasi
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="conn-indicator" id="connIndicator">
+          <span class="dot"></span>
+          <span id="connText">Menghubungkan…</span>
+        </div>
+        <button class="btn red small block" id="btnLogout">↩ Keluar / Logout</button>
+        <button class="btn ghost small block" id="btnBackPublic">👁 Lihat Halaman Publik</button>
+      </div>
+    </aside>
+
+    <main class="admin-content">
+      <!-- ========== SECTION: DATA ATLET ========== -->
+      <section class="section active" data-section="athletes">
+        <div class="section-header">
+          <h1>👥 Data Atlet</h1>
+          <p>Kelola identitas peserta: nama, sekolah, wilayah asal, dan kategori. Nilai diatur terpisah di menu Input Nilai.</p>
         </div>
 
-        <div class="gender-list">
-          <section class="gender-section">
-            <div class="gender-title putra-title">
-              <div>
-                <h3>🤸‍♂️ Nomor Putra</h3>
-                <p id="putraCount">0 atlet</p>
+        <div class="grid-2">
+          <section class="card panel">
+            <div class="panel-title" style="margin-bottom:14px">
+              <h2 id="athleteFormTitle">Tambah Atlet Baru</h2>
+              <p>Data nilai default 0.000 saat baru ditambahkan.</p>
+            </div>
+            <form class="admin-form" id="athleteForm">
+              <input type="hidden" id="athEditId" />
+              <div class="field">
+                <label>Nama Atlet</label>
+                <input id="athName" required maxlength="80" placeholder="Contoh: Aisyah Rahma" />
               </div>
-            </div>
+              <div class="two">
+                <div class="field">
+                  <label>Kategori</label>
+                  <select id="athGender" required>
+                    <option value="Putra">Putra</option>
+                    <option value="Putri">Putri</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Wilayah Kota/Kabupaten</label>
+                  <select id="athRegion" required>
+                    <option value="">— pilih —</option>
+                    <option>Jakarta Pusat</option>
+                    <option>Jakarta Utara</option>
+                    <option>Jakarta Selatan</option>
+                    <option>Jakarta Barat</option>
+                    <option>Jakarta Timur</option>
+                    <option>Kepulauan Seribu</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label>Asal Sekolah</label>
+                <input id="athSchool" required maxlength="100" placeholder="Contoh: SDN Ulujami 06 Pagi" />
+              </div>
 
-            <div class="main-table-wrap mobile-hide">
-              <table>
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Atlet</th>
-                    <th>Asal Sekolah</th>
-                    <th>Kecamatan/Kontingen</th>
-                    <th>Nilai 1</th>
-                    <th>Nilai 2</th>
-                    <th>Nilai 3</th>
-                    <th>Nilai 4</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody id="putraBody"></tbody>
-              </table>
-            </div>
+              <div class="admin-note">
+                <strong>Catatan:</strong> setelah atlet terdaftar, isi nilai di menu <em>Input Nilai</em>. Identitas atlet dapat diedit kapan saja tanpa menghilangkan nilai yang sudah ada.
+              </div>
 
-            <div class="mobile-card-list" id="putraCards"></div>
+              <div class="actions">
+                <button class="btn primary" type="submit" id="athSubmitBtn">💾 Simpan Atlet</button>
+                <button class="btn ghost" type="button" id="athCancelBtn">Batal Edit</button>
+              </div>
+            </form>
           </section>
 
-          <section class="gender-section">
-            <div class="gender-title putri-title">
-              <div>
-                <h3>🤸‍♀️ Nomor Putri</h3>
-                <p id="putriCount">0 atlet</p>
+          <section class="card panel">
+            <div class="panel-head">
+              <div class="panel-title">
+                <h2>Daftar Atlet Terdaftar</h2>
+                <p id="athleteCount">0 atlet</p>
+              </div>
+              <div class="field search">
+                <label>Cari</label>
+                <input id="athleteSearch" type="search" placeholder="Nama / sekolah / wilayah…" />
               </div>
             </div>
-
-            <div class="main-table-wrap mobile-hide">
+            <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>No</th>
                     <th>Atlet</th>
-                    <th>Asal Sekolah</th>
-                    <th>Kecamatan/Kontingen</th>
-                    <th>Nilai 1</th>
-                    <th>Nilai 2</th>
-                    <th>Nilai 3</th>
-                    <th>Nilai 4</th>
-                    <th>Total</th>
+                    <th>Sekolah</th>
+                    <th>Wilayah</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
-                <tbody id="putriBody"></tbody>
+                <tbody id="athleteBody"></tbody>
               </table>
             </div>
-
-            <div class="mobile-card-list" id="putriCards"></div>
+            <div class="mobile-card-list" id="athleteCards"></div>
           </section>
         </div>
       </section>
-    </section>
 
-    <section class="admin-view" id="adminView">
-      <!-- Konten admin di-render via JS, tergantung status login -->
-      <div id="adminContent"></div>
-    </section>
+      <!-- ========== SECTION: INPUT NILAI ========== -->
+      <section class="section" data-section="scores">
+        <div class="section-header">
+          <h1>📝 Input Nilai Akhir</h1>
+          <p>Pilih atlet, masukkan empat komponen nilai akhir dari juri. Total dihitung otomatis.</p>
+        </div>
 
-    <p class="footer">
-      © 2026 Portal O2SN SD Cabang Olahraga Senam • Data tersinkron via Google Apps Script.
-    </p>
-  </main>
+        <section class="card panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <h2>Daftar Atlet untuk Penilaian</h2>
+              <p>Klik <em>Input Nilai</em> pada atlet yang ingin dinilai.</p>
+            </div>
+            <div class="filters">
+              <div class="field">
+                <label>Filter Kategori</label>
+                <select id="scoresGenderFilter">
+                  <option value="">Semua</option>
+                  <option>Putra</option>
+                  <option>Putri</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Status</label>
+                <select id="scoresStatusFilter">
+                  <option value="">Semua</option>
+                  <option value="unscored">Belum dinilai</option>
+                  <option value="scored">Sudah dinilai</option>
+                </select>
+              </div>
+              <div class="field search">
+                <label>Cari Atlet</label>
+                <input id="scoresSearch" type="search" placeholder="Ketik nama atau sekolah…" />
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Atlet</th>
+                  <th>Kategori</th>
+                  <th>Sekolah</th>
+                  <th>N1</th><th>N2</th><th>N3</th><th>N4</th>
+                  <th>Total</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="scoresBody"></tbody>
+            </table>
+          </div>
+          <div class="mobile-card-list" id="scoresCards"></div>
+        </section>
+      </section>
 
-  <!-- ========== TOAST ========== -->
-  <div class="toast" id="toast"></div>
+      <!-- ========== SECTION: PRINT & EXPORT ========== -->
+      <section class="section" data-section="export">
+        <div class="section-header">
+          <h1>🖨️ Print &amp; Export</h1>
+          <p>Cetak rekap nilai untuk publikasi atau unduh data dalam format yang bisa dibuka Excel.</p>
+        </div>
 
-  <!-- ========== LOADING OVERLAY ========== -->
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
+        <div class="grid-2">
+          <section class="card panel">
+            <div class="panel-title" style="margin-bottom:12px">
+              <h2>Cetak Rekap Publik</h2>
+              <p>Membuka tampilan halaman publik dan langsung memunculkan dialog cetak.</p>
+            </div>
+            <div class="actions">
+              <button class="btn primary" id="btnPrintPublic">🖨️ Buka &amp; Cetak</button>
+            </div>
+            <div class="admin-note" style="margin-top:14px">
+              Disarankan pilih <strong>Orientation: Landscape</strong> di dialog cetak agar kolom nilai tidak terpotong.
+            </div>
+          </section>
+
+          <section class="card panel">
+            <div class="panel-title" style="margin-bottom:12px">
+              <h2>Export Excel (CSV)</h2>
+              <p>Unduh seluruh data atlet beserta nilai dalam format CSV. Dapat dibuka langsung di Microsoft Excel atau Google Sheets.</p>
+            </div>
+            <div class="actions">
+              <button class="btn green" id="btnExportCsv">⬇️ Export Excel</button>
+              <button class="btn ghost" id="btnExportJson">⬇️ Export JSON</button>
+            </div>
+            <div class="admin-note" style="margin-top:14px">
+              File CSV menggunakan UTF-8 BOM agar karakter Indonesia tampil benar di Excel.
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ========== SECTION: KONFIGURASI ========== -->
+      <section class="section" data-section="config">
+        <div class="section-header">
+          <h1>⚙️ Konfigurasi</h1>
+          <p>Atur tampilan publik, pesan berjalan, dan password admin.</p>
+        </div>
+
+        <div class="grid-2">
+          <section class="card panel">
+            <div class="panel-title" style="margin-bottom:12px">
+              <h2>Tampilan Publik</h2>
+              <p>Kontrol apakah hasil nilai sudah boleh dilihat publik.</p>
+            </div>
+            <form class="admin-form" id="configForm">
+              <div class="field">
+                <label>Tampilkan Hasil Nilai di Halaman Publik</label>
+                <select id="cfgShowResults">
+                  <option value="true">Ya — tampilkan hasil ke publik</option>
+                  <option value="false">Tidak — sembunyikan (embargo)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Pesan Berjalan (Running Text)</label>
+                <textarea id="cfgRunningText" maxlength="500" placeholder="Contoh: Pengumuman juara akan diumumkan pukul 16.00 WIB di aula utama…"></textarea>
+              </div>
+              <div class="actions">
+                <button class="btn primary" type="submit">💾 Simpan Konfigurasi</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="card panel">
+            <div class="panel-title" style="margin-bottom:12px">
+              <h2>Ganti Password Admin</h2>
+              <p>Password baru langsung berlaku. Sesi sekarang akan otomatis logout.</p>
+            </div>
+            <form class="admin-form" id="passwordForm">
+              <div class="field">
+                <label>Password Baru</label>
+                <input id="newPassword1" type="password" minlength="4" required placeholder="Minimal 4 karakter" />
+              </div>
+              <div class="field">
+                <label>Ulangi Password Baru</label>
+                <input id="newPassword2" type="password" minlength="4" required placeholder="Ketik ulang" />
+              </div>
+              <div class="actions">
+                <button class="btn warning" type="submit">🔑 Ganti Password</button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <section class="card panel" style="margin-top:14px">
+          <div class="panel-title" style="margin-bottom:12px">
+            <h2>Zona Berisiko</h2>
+            <p>Tindakan di bawah ini menghapus data — gunakan dengan hati-hati.</p>
+          </div>
+          <div class="actions">
+            <button class="btn red" id="btnResetSeed">♻️ Reset ke Data Dummy</button>
+          </div>
+        </section>
+      </section>
+
+    </main>
+
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
   </div>
 
-  <!-- ========== MODAL LOGIN ========== -->
+  <!-- ============ TOAST / LOADING / MODALS ============ -->
+  <div class="toast" id="toast"></div>
+  <div class="loading" id="loading"><div class="spinner"></div></div>
+
   <div class="overlay" id="loginOverlay">
     <div class="modal">
       <h3>🔐 Login Admin</h3>
-      <p>Masukkan password admin untuk mengakses input nilai. Password divalidasi langsung di server.</p>
+      <p>Masukkan password admin untuk mengakses panel manajemen.</p>
       <form id="loginForm">
         <div class="field" style="margin-bottom:12px">
           <label>Password</label>
@@ -852,13 +946,12 @@
         </div>
         <div class="actions">
           <button class="btn ghost" type="button" id="loginCancel">Batal</button>
-          <button class="btn primary" type="submit" id="loginSubmit">Masuk</button>
+          <button class="btn primary" type="submit">Masuk</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ========== MODAL KONFIRMASI ========== -->
   <div class="overlay" id="confirmOverlay">
     <div class="modal">
       <h3 id="confirmTitle">Konfirmasi</h3>
@@ -870,125 +963,125 @@
     </div>
   </div>
 
+  <div class="overlay" id="scoreOverlay">
+    <div class="modal">
+      <h3>📝 Input Nilai Akhir</h3>
+      <p id="scoreModalSubtitle">—</p>
+      <form id="scoreForm">
+        <input type="hidden" id="scoreAthleteId" />
+        <div class="two">
+          <div class="field"><label>Nilai 1</label><input id="scoreN1" type="number" step="0.001" min="0" max="20" required placeholder="0.000" /></div>
+          <div class="field"><label>Nilai 2</label><input id="scoreN2" type="number" step="0.001" min="0" max="20" required placeholder="0.000" /></div>
+        </div>
+        <div class="two" style="margin-top:10px">
+          <div class="field"><label>Nilai 3</label><input id="scoreN3" type="number" step="0.001" min="0" max="20" required placeholder="0.000" /></div>
+          <div class="field"><label>Nilai 4</label><input id="scoreN4" type="number" step="0.001" min="0" max="20" required placeholder="0.000" /></div>
+        </div>
+        <div class="admin-note" style="margin-top:12px">
+          Total: <strong id="scorePreview" style="color:#087a60">0.000</strong> · dihitung otomatis dari empat nilai di atas.
+        </div>
+        <div class="actions">
+          <button class="btn ghost" type="button" id="scoreCancel">Batal</button>
+          <button class="btn primary" type="submit">💾 Simpan Nilai</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     /* ============================================================
      * KONFIGURASI BACKEND
-     * Ganti URL di bawah dengan URL Web App Google Apps Script Anda
-     * (lihat README_DEPLOY.md langkah 6).
+     * Ganti URL berikut dengan URL Web App Google Apps Script Anda.
+     * Lihat README_DEPLOY.md langkah 6.
      * ============================================================ */
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzcYz92K-VYzuZlyMQpFh0o4pxAsPnnFVB-ISTzI_vKAMFtRD_-xbAH-5QwsgrlJB0b/exec";
 
     /* ============================================================
      * STATE
      * ============================================================ */
-    let athletes = [];          // sumber data dari server
-    let adminAuthed = false;    // status login admin (session memori saja)
-    let adminPw = "";           // password admin in-memory; dibuang saat logout/refresh
+    let athletes = [];
+    let publicConfig = { showResults: true, runningText: "" };
+    let adminAuthed = false;
+    let adminPw = "";
+    let currentMenu = "athletes";
 
     /* ============================================================
      * UTILITIES
      * ============================================================ */
-    const el = (id) => document.getElementById(id);
-    const fmt = (num) => Number(num || 0).toFixed(3);
-    const totalOf = (item) => Number(item.score1 || 0) + Number(item.score2 || 0) + Number(item.score3 || 0) + Number(item.score4 || 0);
-    const initials = (name) => name.split(" ").map(w => w[0]).join("").slice(0,2).toUpperCase();
+    const el  = (id) => document.getElementById(id);
+    const $$  = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+    const fmt = (n)  => Number(n || 0).toFixed(3);
+    const totalOf = (it) => Number(it.score1||0)+Number(it.score2||0)+Number(it.score3||0)+Number(it.score4||0);
+    const isScored = (it) => totalOf(it) > 0;
+    const initials = (name) => name.split(" ").map(w => w[0]).filter(Boolean).join("").slice(0,2).toUpperCase();
+    const escapeHtml = (s) => String(s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-    function toast(message, isError){
+    function toast(msg, type){
       const t = el("toast");
-      t.textContent = message;
-      t.classList.toggle("error", !!isError);
+      t.textContent = msg;
+      t.classList.remove("error","success");
+      if(type) t.classList.add(type);
       t.classList.add("show");
       clearTimeout(toast._t);
       toast._t = setTimeout(() => t.classList.remove("show"), 2800);
     }
 
-    function setLoading(on){
-      el("loading").classList.toggle("show", !!on);
-    }
+    function setLoading(on){ el("loading").classList.toggle("show", !!on); }
 
-    function setSyncStatus(status, text){
-      const badge = el("syncBadge");
-      badge.classList.remove("offline","syncing");
-      if(status === "offline") badge.classList.add("offline");
-      if(status === "syncing") badge.classList.add("syncing");
-      el("syncText").textContent = text;
+    function setConnStatus(state, text){
+      const c = el("connIndicator");
+      if(!c) return;
+      c.classList.remove("offline","syncing");
+      if(state === "offline") c.classList.add("offline");
+      if(state === "syncing") c.classList.add("syncing");
+      el("connText").textContent = text;
     }
 
     /* ============================================================
-     * MODAL PROMISE-BASED (gantikan window.confirm yang sering
-     * diblok di sandboxed iframe / embed)
+     * MODAL PROMISE-BASED (anti-block di iframe)
      * ============================================================ */
-    function showConfirm(title, message, confirmLabel){
+    function showConfirm(title, message, label){
       return new Promise(resolve => {
         el("confirmTitle").textContent = title || "Konfirmasi";
-        el("confirmMessage").textContent = message || "Apakah Anda yakin?";
-        el("confirmYes").textContent = confirmLabel || "Ya, lanjutkan";
+        el("confirmMessage").textContent = message || "";
+        el("confirmYes").textContent = label || "Ya, lanjutkan";
         el("confirmOverlay").classList.add("show");
         const yes = el("confirmYes"), no = el("confirmNo");
-        const cleanup = (val) => {
-          el("confirmOverlay").classList.remove("show");
-          yes.removeEventListener("click", onYes);
-          no.removeEventListener("click", onNo);
-          resolve(val);
-        };
-        const onYes = () => cleanup(true);
-        const onNo  = () => cleanup(false);
-        yes.addEventListener("click", onYes);
-        no.addEventListener("click", onNo);
+        const done = (v) => { el("confirmOverlay").classList.remove("show");
+          yes.removeEventListener("click", oy); no.removeEventListener("click", on); resolve(v); };
+        const oy = () => done(true), on = () => done(false);
+        yes.addEventListener("click", oy); no.addEventListener("click", on);
       });
     }
-
     function showLogin(){
       return new Promise(resolve => {
         el("loginPassword").value = "";
         el("loginOverlay").classList.add("show");
         setTimeout(() => el("loginPassword").focus(), 100);
-
-        const form = el("loginForm");
-        const cancel = el("loginCancel");
-
-        const cleanup = (val) => {
-          el("loginOverlay").classList.remove("show");
-          form.removeEventListener("submit", onSubmit);
-          cancel.removeEventListener("click", onCancel);
-          resolve(val);
-        };
-        const onSubmit = (ev) => {
-          ev.preventDefault();
-          const pw = el("loginPassword").value;
-          cleanup(pw);
-        };
-        const onCancel = () => cleanup(null);
-        form.addEventListener("submit", onSubmit);
-        cancel.addEventListener("click", onCancel);
+        const form = el("loginForm"), cancel = el("loginCancel");
+        const done = (v) => { el("loginOverlay").classList.remove("show");
+          form.removeEventListener("submit", os); cancel.removeEventListener("click", oc); resolve(v); };
+        const os = (ev) => { ev.preventDefault(); done(el("loginPassword").value); };
+        const oc = () => done(null);
+        form.addEventListener("submit", os); cancel.addEventListener("click", oc);
       });
     }
 
     /* ============================================================
-     * API LAYER — semua komunikasi ke GAS
-     *   - GET untuk read (parameter via querystring)
-     *   - POST untuk write (body JSON, Content-Type text/plain
-     *     untuk hindari preflight CORS yang tidak ditangani GAS)
+     * API LAYER
      * ============================================================ */
     async function apiGet(action){
-      if(!GAS_URL || GAS_URL.includes("PASTE_URL")){
-        throw new Error("GAS_URL belum diisi. Lihat README_DEPLOY.md.");
-      }
-      const url = GAS_URL + "?action=" + encodeURIComponent(action);
-      const res = await fetch(url, { method:"GET", redirect:"follow" });
+      if(!GAS_URL || GAS_URL.includes("PASTE_URL")) throw new Error("GAS_URL belum diisi. Lihat README_DEPLOY.md.");
+      const res = await fetch(GAS_URL + "?action=" + encodeURIComponent(action), { method:"GET", redirect:"follow" });
       const data = await res.json();
       if(!data.ok) throw new Error(data.error || "Gagal mengambil data.");
       return data;
     }
-
     async function apiPost(payload){
-      if(!GAS_URL || GAS_URL.includes("PASTE_URL")){
-        throw new Error("GAS_URL belum diisi. Lihat README_DEPLOY.md.");
-      }
+      if(!GAS_URL || GAS_URL.includes("PASTE_URL")) throw new Error("GAS_URL belum diisi. Lihat README_DEPLOY.md.");
       const res = await fetch(GAS_URL, {
-        method: "POST",
-        redirect: "follow",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        method:"POST", redirect:"follow",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
         body: JSON.stringify(payload)
       });
       const data = await res.json();
@@ -996,443 +1089,615 @@
       return data;
     }
 
-    async function fetchAthletes(){
-      setSyncStatus("syncing", "Menyinkronkan…");
+    async function fetchAll(){
+      setConnStatus("syncing", "Menyinkronkan…");
       try{
         const data = await apiGet("list");
         athletes = data.athletes || [];
-        const now = new Date();
-        const time = now.toLocaleTimeString("id-ID", {hour:"2-digit", minute:"2-digit"});
-        setSyncStatus("online", `Tersinkron · ${time}`);
-        renderAll();
+        publicConfig = data.config || { showResults:true, runningText:"" };
+        const time = new Date().toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit" });
+        setConnStatus("online", `Terhubung · ${time}`);
+        renderPublic();
+        if(adminAuthed) renderCurrentAdminSection();
       }catch(err){
-        setSyncStatus("offline", "Gagal sinkron");
-        toast("Gagal memuat data: " + err.message, true);
+        setConnStatus("offline", "Tidak terhubung");
+        toast("Gagal memuat data: " + err.message, "error");
         console.error(err);
       }
     }
 
     /* ============================================================
-     * RENDERING
+     * RENDER PUBLIC
      * ============================================================ */
-    function renderStats(){
+    function renderMarquee(){
+      const text = (publicConfig.runningText || "").trim() || "—";
+      // duplikasi konten agar loop mulus
+      el("marqueeContent").innerHTML = `<span>${escapeHtml(text)}</span><span>${escapeHtml(text)}</span>`;
+    }
+
+    function renderPublic(){
+      renderMarquee();
+      const container = el("publicContent");
+
+      if(!publicConfig.showResults){
+        container.innerHTML = `
+          <section class="card embargo" style="margin-top:16px">
+            <div class="icon">⏳</div>
+            <h2>Hasil Belum Diumumkan</h2>
+            <p>Daftar nilai akan ditampilkan setelah seluruh penilaian juri diverifikasi oleh panitia.<br>Mohon menunggu informasi resmi dari KKG PJOK Provinsi DKI Jakarta.</p>
+          </section>
+        `;
+        return;
+      }
+
+      // showResults = true → render stats + tabel
       const total = athletes.length;
       const putra = athletes.filter(a => a.gender === "Putra").length;
       const putri = athletes.filter(a => a.gender === "Putri").length;
-      el("statTotal").textContent = total;
-      el("statPutra").textContent = putra;
-      el("statPutri").textContent = putri;
+      const sorted = [...athletes].sort((a,b) => totalOf(b) - totalOf(a));
+      const best = sorted[0];
 
-      if(athletes.length === 0){
-        el("statBest").textContent = "0.000";
-        el("statBestName").textContent = "Belum ada data";
-        return;
-      }
-      const best = [...athletes].sort((a,b) => totalOf(b) - totalOf(a))[0];
-      el("statBest").textContent = fmt(totalOf(best));
-      el("statBestName").textContent = `${best.name} (${best.gender})`;
+      container.innerHTML = `
+        <div class="stats">
+          <article class="card stat">
+            <div class="label">Total Atlet</div>
+            <div class="value">${total}</div>
+            <div class="sub">Putra dan putri</div>
+          </article>
+          <article class="card stat">
+            <div class="label">Peserta Putra</div>
+            <div class="value">${putra}</div>
+            <div class="sub">Nomor Perorangan Serba Bisa</div>
+          </article>
+          <article class="card stat">
+            <div class="label">Peserta Putri</div>
+            <div class="value">${putri}</div>
+            <div class="sub">Nomor Perorangan Serba Bisa</div>
+          </article>
+          <article class="card stat">
+            <div class="label">Nilai Tertinggi</div>
+            <div class="value">${best ? fmt(totalOf(best)) : "0.000"}</div>
+            <div class="sub">${best ? escapeHtml(best.name) + " (" + best.gender + ")" : "Belum ada data"}</div>
+          </article>
+        </div>
+
+        <section class="card panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <h2>📊 Daftar Nilai Perorangan Serba Bisa</h2>
+              <p>Data ditampilkan terpisah antara Putra dan Putri.</p>
+            </div>
+            <div class="filters">
+              <div class="field">
+                <label>Urutan Nilai</label>
+                <select id="sortOrder">
+                  <option value="desc">Tertinggi ke Terendah</option>
+                  <option value="asc">Terendah ke Tertinggi</option>
+                </select>
+              </div>
+              <div class="field search">
+                <label>Cari Atlet/Sekolah</label>
+                <input id="searchInput" type="search" placeholder="Ketik nama, sekolah, wilayah…" />
+              </div>
+            </div>
+          </div>
+
+          <div class="gender-list">
+            ${renderGenderBlock("Putra")}
+            ${renderGenderBlock("Putri")}
+          </div>
+        </section>
+      `;
+
+      // Bind events dynamically
+      el("sortOrder").addEventListener("change", renderPublicTables);
+      el("searchInput").addEventListener("input", renderPublicTables);
+      renderPublicTables();
     }
 
-    function filteredByGender(gender){
-      const q = el("searchInput").value.trim().toLowerCase();
-      const order = el("sortOrder").value;
+    function renderGenderBlock(gender){
+      const icon = gender === "Putra" ? "🤸‍♂️" : "🤸‍♀️";
+      const titleCls = gender === "Putra" ? "putra-title" : "putri-title";
+      const lc = gender.toLowerCase();
+      return `
+        <section class="gender-section">
+          <div class="gender-title ${titleCls}">
+            <div>
+              <h3>${icon} Nomor ${gender}</h3>
+              <p id="${lc}Count">0 atlet</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th><th>Atlet</th><th>Asal Sekolah</th><th>Wilayah</th>
+                  <th>N1</th><th>N2</th><th>N3</th><th>N4</th><th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="${lc}Body"></tbody>
+            </table>
+          </div>
+          <div class="mobile-card-list" id="${lc}Cards"></div>
+        </section>
+      `;
+    }
+
+    function publicFiltered(gender){
+      const q = (el("searchInput")?.value || "").trim().toLowerCase();
+      const order = el("sortOrder")?.value || "desc";
       return athletes
-        .filter(item => item.gender === gender)
-        .filter(item => {
-          const haystack = `${item.name} ${item.school} ${item.district} ${item.gender}`.toLowerCase();
-          return haystack.includes(q);
-        })
+        .filter(a => a.gender === gender)
+        .filter(a => `${a.name} ${a.school} ${a.region} ${a.gender}`.toLowerCase().includes(q))
         .sort((a,b) => order === "asc" ? totalOf(a) - totalOf(b) : totalOf(b) - totalOf(a));
     }
 
-    function rankClass(idx){
-      if(idx === 0) return "gold";
-      if(idx === 1) return "silver";
-      if(idx === 2) return "bronze";
-      return "";
-    }
+    function rankClass(i){ return i===0?"gold":i===1?"silver":i===2?"bronze":""; }
 
-    function renderGenderTable(gender, bodyId, cardsId, countId){
-      const data = filteredByGender(gender);
-      const body = el(bodyId);
-      const mobile = el(cardsId);
-      el(countId).textContent = `${data.length} atlet`;
+    function renderPublicTables(){
+      ["Putra","Putri"].forEach(g => {
+        const data = publicFiltered(g);
+        const lc = g.toLowerCase();
+        el(`${lc}Count`).textContent = `${data.length} atlet`;
+        const body = el(`${lc}Body`);
+        const cards = el(`${lc}Cards`);
+        if(!body) return;
 
-      if(data.length === 0){
-        body.innerHTML = `<tr><td colspan="9" class="empty">Belum ada data ${gender} sesuai pencarian.</td></tr>`;
-        mobile.innerHTML = `<div class="empty card">Belum ada data ${gender} sesuai pencarian.</div>`;
-        return;
-      }
+        if(data.length === 0){
+          body.innerHTML = `<tr><td colspan="9" class="empty">Belum ada data ${g} sesuai pencarian.</td></tr>`;
+          cards.innerHTML = `<div class="empty card">Belum ada data ${g} sesuai pencarian.</div>`;
+          return;
+        }
 
-      body.innerHTML = data.map((item, index) => {
-        const avatarClass = item.gender === "Putri" ? "girl" : "";
-        const rc = rankClass(index);
-        return `
-          <tr>
-            <td><span class="rank ${rc}">${index + 1}</span></td>
-            <td>
-              <div class="athlete">
-                <span class="avatar ${avatarClass}">${initials(item.name)}</span>
-                <div>
-                  <strong>${item.name}</strong>
-                  <span>${item.gender}</span>
-                </div>
-              </div>
-            </td>
-            <td>${item.school}</td>
-            <td>${item.district}</td>
-            <td class="score">${fmt(item.score1)}</td>
-            <td class="score">${fmt(item.score2)}</td>
-            <td class="score">${fmt(item.score3)}</td>
-            <td class="score">${fmt(item.score4)}</td>
-            <td class="score total">${fmt(totalOf(item))}</td>
-          </tr>
-        `;
-      }).join("");
+        body.innerHTML = data.map((it, i) => {
+          const cls = it.gender === "Putri" ? "girl" : "";
+          const rc = rankClass(i);
+          return `<tr>
+            <td><span class="rank ${rc}">${i+1}</span></td>
+            <td><div class="athlete"><span class="avatar ${cls}">${initials(it.name)}</span>
+              <div><strong>${escapeHtml(it.name)}</strong><span>${it.gender}</span></div></div></td>
+            <td>${escapeHtml(it.school)}</td>
+            <td>${escapeHtml(it.region)}</td>
+            <td class="score ${Number(it.score1)?'':'zero'}">${fmt(it.score1)}</td>
+            <td class="score ${Number(it.score2)?'':'zero'}">${fmt(it.score2)}</td>
+            <td class="score ${Number(it.score3)?'':'zero'}">${fmt(it.score3)}</td>
+            <td class="score ${Number(it.score4)?'':'zero'}">${fmt(it.score4)}</td>
+            <td class="score total">${fmt(totalOf(it))}</td>
+          </tr>`;
+        }).join("");
 
-      mobile.innerHTML = data.map((item, index) => {
-        const rc = rankClass(index);
-        return `
-          <article class="result-card">
+        cards.innerHTML = data.map((it, i) => {
+          const rc = rankClass(i);
+          return `<article class="result-card">
             <div class="result-top">
               <div class="athlete">
-                <span class="rank ${rc}">${index + 1}</span>
-                <div>
-                  <strong>${item.name}</strong>
-                  <span>${item.school}</span>
-                </div>
+                <span class="rank ${rc}">${i+1}</span>
+                <div><strong>${escapeHtml(it.name)}</strong><span>${escapeHtml(it.school)}</span></div>
               </div>
-              <span class="chip ${item.gender.toLowerCase()}">${item.gender}</span>
+              <span class="chip ${it.gender.toLowerCase()}">${it.gender}</span>
             </div>
             <div class="result-mid">
-              <div class="mini-score"><span>Nilai 1</span><strong>${fmt(item.score1)}</strong></div>
-              <div class="mini-score"><span>Nilai 2</span><strong>${fmt(item.score2)}</strong></div>
-              <div class="mini-score"><span>Nilai 3</span><strong>${fmt(item.score3)}</strong></div>
-              <div class="mini-score"><span>Nilai 4</span><strong>${fmt(item.score4)}</strong></div>
+              <div class="mini-score"><span>Nilai 1</span><strong>${fmt(it.score1)}</strong></div>
+              <div class="mini-score"><span>Nilai 2</span><strong>${fmt(it.score2)}</strong></div>
+              <div class="mini-score"><span>Nilai 3</span><strong>${fmt(it.score3)}</strong></div>
+              <div class="mini-score"><span>Nilai 4</span><strong>${fmt(it.score4)}</strong></div>
             </div>
             <div class="result-total">
-              <span class="muted">${item.district}</span>
-              <strong class="score total">Total ${fmt(totalOf(item))}</strong>
+              <span class="muted">${escapeHtml(it.region)}</span>
+              <strong class="score total">Total ${fmt(totalOf(it))}</strong>
             </div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    function renderPublicTable(){
-      renderGenderTable("Putra", "putraBody", "putraCards", "putraCount");
-      renderGenderTable("Putri", "putriBody", "putriCards", "putriCount");
-    }
-
-    function renderAdmin(){
-      const container = el("adminContent");
-
-      // Belum login → tampilkan gerbang
-      if(!adminAuthed){
-        container.innerHTML = `
-          <section class="card panel">
-            <div class="locked-notice">
-              <div class="lock-icon">🔒</div>
-              <h2 style="margin:0 0 6px">Akses Admin Terkunci</h2>
-              <p style="margin:0 0 16px;color:var(--muted)">Masuk dengan password admin untuk menginput, mengedit, atau menghapus data nilai.</p>
-              <button class="btn primary" id="btnOpenLogin">🔐 Login Admin</button>
-            </div>
-          </section>
-        `;
-        el("btnOpenLogin").addEventListener("click", handleLogin);
-        return;
-      }
-
-      // Sudah login → render form + tabel admin
-      container.innerHTML = `
-        <div class="admin-layout">
-          <section class="card panel">
-            <div class="panel-title" style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-              <div>
-                <h2 id="formTitle">Input Data Atlet</h2>
-                <p>Data disimpan langsung ke Google Sheets. Sesi admin hanya berlaku selama tab terbuka.</p>
-              </div>
-              <button class="btn small red" type="button" id="btnLogout" title="Keluar dari sesi admin">Logout</button>
-            </div>
-
-            <form class="admin-form" id="athleteForm">
-              <input type="hidden" id="editId" />
-              <div class="two">
-                <div class="field">
-                  <label>Nama Atlet</label>
-                  <input id="name" required placeholder="Contoh: Aisyah Rahma" />
-                </div>
-                <div class="field">
-                  <label>Kategori</label>
-                  <select id="gender" required>
-                    <option value="Putra">Putra</option>
-                    <option value="Putri">Putri</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="two">
-                <div class="field">
-                  <label>Asal Sekolah</label>
-                  <input id="school" required placeholder="Contoh: SDN Ulujami 06 Pagi" />
-                </div>
-                <div class="field">
-                  <label>Kecamatan/Kontingen</label>
-                  <input id="district" required placeholder="Contoh: Pesanggrahan" />
-                </div>
-              </div>
-
-              <div class="two">
-                <div class="field">
-                  <label>Nilai 1</label>
-                  <input id="score1" type="number" step="0.001" min="0" max="20" required placeholder="0.000" />
-                </div>
-                <div class="field">
-                  <label>Nilai 2</label>
-                  <input id="score2" type="number" step="0.001" min="0" max="20" required placeholder="0.000" />
-                </div>
-              </div>
-
-              <div class="two">
-                <div class="field">
-                  <label>Nilai 3</label>
-                  <input id="score3" type="number" step="0.001" min="0" max="20" required placeholder="0.000" />
-                </div>
-                <div class="field">
-                  <label>Nilai 4</label>
-                  <input id="score4" type="number" step="0.001" min="0" max="20" required placeholder="0.000" />
-                </div>
-              </div>
-
-              <div class="admin-note">
-                <strong>Catatan:</strong> total nilai dihitung otomatis dari Nilai 1–4. Setiap penyimpanan langsung tertulis di Google Sheets dengan proteksi LockService anti tumpang tindih.
-              </div>
-
-              <div class="actions">
-                <button class="btn primary" type="submit" id="submitBtn">💾 Simpan Data</button>
-                <button class="btn ghost" type="button" id="btnCancelEdit">Batal Edit</button>
-                <button class="btn green" type="button" id="btnCopyJson">Copy JSON</button>
-                <button class="btn red" type="button" id="btnReset">Reset Dummy</button>
-              </div>
-            </form>
-          </section>
-
-          <section class="card panel">
-            <div class="panel-head">
-              <div class="panel-title">
-                <h2>Data Masuk</h2>
-                <p>Admin dapat mengedit atau menghapus data atlet sebelum diumumkan.</p>
-              </div>
-            </div>
-            <div class="main-table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Atlet</th>
-                    <th>Kategori</th>
-                    <th>Sekolah</th>
-                    <th>Total</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody id="adminBody"></tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      `;
-
-      renderAdminTable();
-      bindAdminEvents();
-    }
-
-    function renderAdminTable(){
-      const body = el("adminBody");
-      const data = [...athletes].sort((a,b) => totalOf(b) - totalOf(a));
-
-      if(data.length === 0){
-        body.innerHTML = `<tr><td colspan="5" class="empty">Belum ada data.</td></tr>`;
-        return;
-      }
-
-      body.innerHTML = data.map(item => `
-        <tr>
-          <td>
-            <div class="athlete">
-              <span class="avatar ${item.gender === "Putri" ? "girl" : ""}">${initials(item.name)}</span>
-              <div>
-                <strong>${item.name}</strong>
-                <span>${item.district}</span>
-              </div>
-            </div>
-          </td>
-          <td><span class="chip ${item.gender.toLowerCase()}">${item.gender}</span></td>
-          <td>${item.school}</td>
-          <td class="score total">${fmt(totalOf(item))}</td>
-          <td>
-            <div class="actions">
-              <button class="btn small ghost" data-act="edit" data-id="${item.id}">Edit</button>
-              <button class="btn small red" data-act="del" data-id="${item.id}">Hapus</button>
-            </div>
-          </td>
-        </tr>
-      `).join("");
-
-      // Delegasi event untuk tombol edit/hapus
-      body.querySelectorAll("button[data-act]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const id = btn.dataset.id;
-          if(btn.dataset.act === "edit") editAthlete(id);
-          else deleteAthlete(id);
-        });
+          </article>`;
+        }).join("");
       });
     }
 
-    function renderAll(){
-      renderStats();
-      renderPublicTable();
-      if(el("adminView").classList.contains("active")) renderAdmin();
-    }
-
     /* ============================================================
-     * ADMIN ACTIONS (semua async ke GAS)
+     * RENDER ADMIN — DATA ATLET
      * ============================================================ */
-    function bindAdminEvents(){
-      el("athleteForm").addEventListener("submit", handleSubmit);
-      el("btnCancelEdit").addEventListener("click", resetForm);
-      el("btnCopyJson").addEventListener("click", handleCopyJson);
-      el("btnReset").addEventListener("click", handleResetSeed);
-      el("btnLogout").addEventListener("click", handleLogout);
-    }
+    function renderAthletesSection(){
+      const q = (el("athleteSearch")?.value || "").trim().toLowerCase();
+      const data = [...athletes]
+        .filter(a => `${a.name} ${a.school} ${a.region} ${a.gender}`.toLowerCase().includes(q))
+        .sort((a,b) => a.name.localeCompare(b.name, "id"));
+      el("athleteCount").textContent = `${data.length} atlet terdaftar`;
 
-    async function handleSubmit(event){
-      event.preventDefault();
-      const payload = {
-        id: el("editId").value || null,
-        name: el("name").value.trim(),
-        gender: el("gender").value,
-        school: el("school").value.trim(),
-        district: el("district").value.trim(),
-        score1: Number(el("score1").value || 0),
-        score2: Number(el("score2").value || 0),
-        score3: Number(el("score3").value || 0),
-        score4: Number(el("score4").value || 0)
-      };
+      const body = el("athleteBody");
+      const cards = el("athleteCards");
 
-      if(!payload.name || !payload.school || !payload.district){
-        toast("Lengkapi nama, sekolah, dan kontingen.", true);
+      if(data.length === 0){
+        body.innerHTML = `<tr><td colspan="5" class="empty">Belum ada atlet.</td></tr>`;
+        cards.innerHTML = `<div class="empty card">Belum ada atlet.</div>`;
         return;
       }
 
-      setLoading(true);
-      try{
-        await apiPost({ action:"upsert", password: adminPw, athlete: payload });
-        toast(payload.id ? "Data atlet berhasil diperbarui." : "Data atlet berhasil ditambahkan.");
-        resetForm();
-        await fetchAthletes();
-        renderAdmin();
-      }catch(err){
-        toast("Gagal menyimpan: " + err.message, true);
-      }finally{
-        setLoading(false);
-      }
+      body.innerHTML = data.map(it => {
+        const cls = it.gender === "Putri" ? "girl" : "";
+        const status = isScored(it)
+          ? `<span class="chip scored">Sudah dinilai</span>`
+          : `<span class="chip unscored">Belum dinilai</span>`;
+        return `<tr>
+          <td><div class="athlete"><span class="avatar ${cls}">${initials(it.name)}</span>
+            <div><strong>${escapeHtml(it.name)}</strong><span class="chip ${it.gender.toLowerCase()}" style="margin-top:3px">${it.gender}</span></div></div></td>
+          <td>${escapeHtml(it.school)}</td>
+          <td>${escapeHtml(it.region)}</td>
+          <td>${status}</td>
+          <td><div class="actions">
+            <button class="btn small ghost" data-act="edit-ath" data-id="${it.id}">Edit</button>
+            <button class="btn small red"   data-act="del-ath"  data-id="${it.id}">Hapus</button>
+          </div></td>
+        </tr>`;
+      }).join("");
+
+      cards.innerHTML = data.map(it => {
+        const cls = it.gender === "Putri" ? "girl" : "";
+        const status = isScored(it)
+          ? `<span class="chip scored">Sudah dinilai</span>`
+          : `<span class="chip unscored">Belum dinilai</span>`;
+        return `<article class="result-card">
+          <div class="result-top">
+            <div class="athlete"><span class="avatar ${cls}">${initials(it.name)}</span>
+              <div><strong>${escapeHtml(it.name)}</strong><span>${escapeHtml(it.school)}</span></div></div>
+            <span class="chip ${it.gender.toLowerCase()}">${it.gender}</span>
+          </div>
+          <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <span class="muted" style="font-size:12px">${escapeHtml(it.region)}</span>
+            ${status}
+          </div>
+          <div class="actions" style="margin-top:10px">
+            <button class="btn small ghost block" data-act="edit-ath" data-id="${it.id}">Edit</button>
+            <button class="btn small red block"   data-act="del-ath"  data-id="${it.id}">Hapus</button>
+          </div>
+        </article>`;
+      }).join("");
+
+      // Bind row actions
+      $$('button[data-act="edit-ath"]').forEach(b => b.addEventListener("click", () => editAthlete(b.dataset.id)));
+      $$('button[data-act="del-ath"]').forEach(b => b.addEventListener("click", () => deleteAthlete(b.dataset.id)));
     }
 
     function editAthlete(id){
-      const item = athletes.find(a => a.id === id);
-      if(!item) return;
-      el("editId").value = item.id;
-      el("name").value = item.name;
-      el("gender").value = item.gender;
-      el("school").value = item.school;
-      el("district").value = item.district;
-      el("score1").value = item.score1;
-      el("score2").value = item.score2;
-      el("score3").value = item.score3;
-      el("score4").value = item.score4;
-      el("formTitle").textContent = "Edit Data Atlet";
-      el("submitBtn").textContent = "✅ Update Data";
+      const it = athletes.find(a => a.id === id);
+      if(!it) return;
+      el("athEditId").value = it.id;
+      el("athName").value = it.name;
+      el("athGender").value = it.gender;
+      el("athRegion").value = it.region;
+      el("athSchool").value = it.school;
+      el("athleteFormTitle").textContent = "Edit Data Atlet";
+      el("athSubmitBtn").textContent = "✅ Update Atlet";
       toast("Mode edit aktif.");
-      document.querySelector("#athleteForm").scrollIntoView({behavior:"smooth", block:"start"});
+      el("athleteForm").scrollIntoView({behavior:"smooth", block:"start"});
     }
 
-    async function deleteAthlete(id){
-      const item = athletes.find(a => a.id === id);
-      if(!item) return;
-      const ok = await showConfirm("Hapus Data Atlet", `Hapus data ${item.name}? Tindakan ini tidak bisa dibatalkan.`, "Ya, hapus");
-      if(!ok) return;
+    function resetAthleteForm(){
+      el("athleteForm").reset();
+      el("athEditId").value = "";
+      el("athleteFormTitle").textContent = "Tambah Atlet Baru";
+      el("athSubmitBtn").textContent = "💾 Simpan Atlet";
+    }
 
+    async function handleAthleteSubmit(ev){
+      ev.preventDefault();
+      const payload = {
+        id: el("athEditId").value || null,
+        name: el("athName").value.trim(),
+        gender: el("athGender").value,
+        school: el("athSchool").value.trim(),
+        region: el("athRegion").value
+      };
+      if(!payload.name || !payload.school || !payload.region){
+        toast("Lengkapi nama, sekolah, dan wilayah.", "error");
+        return;
+      }
       setLoading(true);
       try{
-        await apiPost({ action:"delete", password: adminPw, id });
-        toast("Data berhasil dihapus.");
-        await fetchAthletes();
-        renderAdmin();
+        await apiPost({ action:"upsertAthlete", password: adminPw, athlete: payload });
+        toast(payload.id ? "Data atlet diperbarui." : "Atlet baru ditambahkan.", "success");
+        resetAthleteForm();
+        await fetchAll();
       }catch(err){
-        toast("Gagal menghapus: " + err.message, true);
+        toast(err.message, "error");
       }finally{
         setLoading(false);
       }
     }
 
-    function resetForm(){
-      const form = el("athleteForm");
-      if(form){
-        form.reset();
-        el("editId").value = "";
-        el("formTitle").textContent = "Input Data Atlet";
-        el("submitBtn").textContent = "💾 Simpan Data";
+    async function deleteAthlete(id){
+      const it = athletes.find(a => a.id === id);
+      if(!it) return;
+      const ok = await showConfirm("Hapus Atlet",
+        `Hapus data ${it.name} (${it.gender}, ${it.school})? Nilai yang sudah ada juga akan hilang. Tindakan ini tidak dapat dibatalkan.`,
+        "Ya, hapus");
+      if(!ok) return;
+      setLoading(true);
+      try{
+        await apiPost({ action:"deleteAthlete", password: adminPw, id });
+        toast("Atlet berhasil dihapus.", "success");
+        await fetchAll();
+      }catch(err){
+        toast(err.message, "error");
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    /* ============================================================
+     * RENDER ADMIN — INPUT NILAI
+     * ============================================================ */
+    function renderScoresSection(){
+      const q = (el("scoresSearch")?.value || "").trim().toLowerCase();
+      const gf = el("scoresGenderFilter")?.value || "";
+      const sf = el("scoresStatusFilter")?.value || "";
+
+      const data = [...athletes]
+        .filter(a => !gf || a.gender === gf)
+        .filter(a => !sf || (sf === "scored" ? isScored(a) : !isScored(a)))
+        .filter(a => `${a.name} ${a.school} ${a.region}`.toLowerCase().includes(q))
+        .sort((a,b) => a.name.localeCompare(b.name, "id"));
+
+      const body = el("scoresBody");
+      const cards = el("scoresCards");
+
+      if(data.length === 0){
+        body.innerHTML = `<tr><td colspan="9" class="empty">Tidak ada atlet sesuai filter.</td></tr>`;
+        cards.innerHTML = `<div class="empty card">Tidak ada atlet sesuai filter.</div>`;
+        return;
+      }
+
+      body.innerHTML = data.map(it => {
+        const cls = it.gender === "Putri" ? "girl" : "";
+        return `<tr>
+          <td><div class="athlete"><span class="avatar ${cls}">${initials(it.name)}</span>
+            <div><strong>${escapeHtml(it.name)}</strong><span>${escapeHtml(it.region)}</span></div></div></td>
+          <td><span class="chip ${it.gender.toLowerCase()}">${it.gender}</span></td>
+          <td>${escapeHtml(it.school)}</td>
+          <td class="score ${Number(it.score1)?'':'zero'}">${fmt(it.score1)}</td>
+          <td class="score ${Number(it.score2)?'':'zero'}">${fmt(it.score2)}</td>
+          <td class="score ${Number(it.score3)?'':'zero'}">${fmt(it.score3)}</td>
+          <td class="score ${Number(it.score4)?'':'zero'}">${fmt(it.score4)}</td>
+          <td class="score total">${fmt(totalOf(it))}</td>
+          <td><button class="btn small primary" data-act="score" data-id="${it.id}">📝 Input</button></td>
+        </tr>`;
+      }).join("");
+
+      cards.innerHTML = data.map(it => {
+        const cls = it.gender === "Putri" ? "girl" : "";
+        return `<article class="result-card">
+          <div class="result-top">
+            <div class="athlete"><span class="avatar ${cls}">${initials(it.name)}</span>
+              <div><strong>${escapeHtml(it.name)}</strong><span>${escapeHtml(it.school)}</span></div></div>
+            <span class="chip ${it.gender.toLowerCase()}">${it.gender}</span>
+          </div>
+          <div class="result-mid">
+            <div class="mini-score"><span>N1</span><strong>${fmt(it.score1)}</strong></div>
+            <div class="mini-score"><span>N2</span><strong>${fmt(it.score2)}</strong></div>
+            <div class="mini-score"><span>N3</span><strong>${fmt(it.score3)}</strong></div>
+            <div class="mini-score"><span>N4</span><strong>${fmt(it.score4)}</strong></div>
+          </div>
+          <div class="result-total">
+            <strong class="score total">Total ${fmt(totalOf(it))}</strong>
+            <button class="btn small primary" data-act="score" data-id="${it.id}">📝 Input Nilai</button>
+          </div>
+        </article>`;
+      }).join("");
+
+      $$('button[data-act="score"]').forEach(b => b.addEventListener("click", () => openScoreModal(b.dataset.id)));
+    }
+
+    function openScoreModal(id){
+      const it = athletes.find(a => a.id === id);
+      if(!it) return;
+      el("scoreAthleteId").value = it.id;
+      el("scoreModalSubtitle").innerHTML = `<strong>${escapeHtml(it.name)}</strong> · ${it.gender} · ${escapeHtml(it.school)} (${escapeHtml(it.region)})`;
+      el("scoreN1").value = it.score1 || "";
+      el("scoreN2").value = it.score2 || "";
+      el("scoreN3").value = it.score3 || "";
+      el("scoreN4").value = it.score4 || "";
+      updateScorePreview();
+      el("scoreOverlay").classList.add("show");
+      setTimeout(() => el("scoreN1").focus(), 100);
+    }
+
+    function updateScorePreview(){
+      const total = ["scoreN1","scoreN2","scoreN3","scoreN4"]
+        .reduce((s,id) => s + Number(el(id).value || 0), 0);
+      el("scorePreview").textContent = total.toFixed(3);
+    }
+
+    async function handleScoreSubmit(ev){
+      ev.preventDefault();
+      const payload = {
+        action: "updateScores",
+        password: adminPw,
+        id: el("scoreAthleteId").value,
+        score1: Number(el("scoreN1").value || 0),
+        score2: Number(el("scoreN2").value || 0),
+        score3: Number(el("scoreN3").value || 0),
+        score4: Number(el("scoreN4").value || 0)
+      };
+      setLoading(true);
+      try{
+        await apiPost(payload);
+        toast("Nilai berhasil disimpan.", "success");
+        el("scoreOverlay").classList.remove("show");
+        await fetchAll();
+      }catch(err){
+        toast(err.message, "error");
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    /* ============================================================
+     * RENDER ADMIN — EXPORT / PRINT
+     * ============================================================ */
+    function downloadFile(content, filename, mime){
+      // CSV pakai BOM agar Excel kenali UTF-8
+      const blob = new Blob([content], { type: mime });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function handleExportCsv(){
+      const sorted = [...athletes].sort((a,b) => totalOf(b) - totalOf(a));
+      const rows = [
+        ["Rank","Nama Atlet","Kategori","Asal Sekolah","Wilayah","Nilai 1","Nilai 2","Nilai 3","Nilai 4","Total"],
+        ...sorted.map((it, i) => [
+          i+1, it.name, it.gender, it.school, it.region,
+          fmt(it.score1), fmt(it.score2), fmt(it.score3), fmt(it.score4), fmt(totalOf(it))
+        ])
+      ];
+      const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+      downloadFile("\uFEFF" + csv, "O2SN-Senam-Rekap-Nilai.csv", "text/csv;charset=utf-8");
+      toast("File CSV berhasil diunduh.", "success");
+    }
+
+    function handleExportJson(){
+      downloadFile(JSON.stringify(athletes, null, 2), "O2SN-Senam-Data.json", "application/json");
+      toast("File JSON berhasil diunduh.", "success");
+    }
+
+    function handlePrintPublic(){
+      // Pindah ke tampilan publik, lalu trigger print
+      switchToPublic();
+      setTimeout(() => window.print(), 400);
+    }
+
+    /* ============================================================
+     * RENDER ADMIN — KONFIGURASI
+     * ============================================================ */
+    function renderConfigSection(){
+      el("cfgShowResults").value = publicConfig.showResults ? "true" : "false";
+      el("cfgRunningText").value = publicConfig.runningText || "";
+    }
+
+    async function handleConfigSubmit(ev){
+      ev.preventDefault();
+      const payload = {
+        action: "updateConfig",
+        password: adminPw,
+        showResults: el("cfgShowResults").value === "true",
+        runningText: el("cfgRunningText").value.trim()
+      };
+      setLoading(true);
+      try{
+        await apiPost(payload);
+        toast("Konfigurasi tersimpan.", "success");
+        await fetchAll();
+      }catch(err){
+        toast(err.message, "error");
+      }finally{
+        setLoading(false);
+      }
+    }
+
+    async function handlePasswordSubmit(ev){
+      ev.preventDefault();
+      const p1 = el("newPassword1").value;
+      const p2 = el("newPassword2").value;
+      if(p1.length < 4){ toast("Password minimal 4 karakter.", "error"); return; }
+      if(p1 !== p2){ toast("Password dan ulangan tidak sama.", "error"); return; }
+      const ok = await showConfirm("Ganti Password",
+        "Setelah diganti, Anda akan otomatis logout dan harus login ulang dengan password baru. Lanjutkan?",
+        "Ya, ganti");
+      if(!ok) return;
+      setLoading(true);
+      try{
+        await apiPost({ action:"changePassword", password: adminPw, newPassword: p1 });
+        toast("Password berhasil diganti. Silakan login ulang.", "success");
+        el("newPassword1").value = ""; el("newPassword2").value = "";
+        setTimeout(() => handleLogout(), 1200);
+      }catch(err){
+        toast(err.message, "error");
+      }finally{
+        setLoading(false);
       }
     }
 
     async function handleResetSeed(){
-      const ok = await showConfirm("Reset ke Data Dummy", "Seluruh data atlet di Google Sheets akan dihapus dan diganti dengan 6 atlet dummy. Lanjutkan?", "Ya, reset");
+      const ok = await showConfirm("Reset ke Data Dummy",
+        "SELURUH data atlet akan terhapus dan diganti dengan 6 atlet contoh. Tindakan ini tidak dapat dibatalkan.",
+        "Ya, reset");
       if(!ok) return;
-
       setLoading(true);
       try{
         await apiPost({ action:"resetSeed", password: adminPw });
-        toast("Data berhasil direset ke dummy.");
-        resetForm();
-        await fetchAthletes();
-        renderAdmin();
+        toast("Data direset ke dummy.", "success");
+        await fetchAll();
       }catch(err){
-        toast("Gagal reset: " + err.message, true);
+        toast(err.message, "error");
       }finally{
         setLoading(false);
       }
     }
 
-    async function handleCopyJson(){
-      try{
-        const json = JSON.stringify(athletes, null, 2);
-        await navigator.clipboard.writeText(json);
-        toast("JSON data berhasil disalin.");
-      }catch(err){
-        toast("Gagal menyalin JSON.", true);
-      }
+    /* ============================================================
+     * MENU NAVIGATION (sidebar)
+     * ============================================================ */
+    function setActiveMenu(menu){
+      currentMenu = menu;
+      $$(".menu-item").forEach(b => b.classList.toggle("active", b.dataset.menu === menu));
+      $$(".section").forEach(s => s.classList.toggle("active", s.dataset.section === menu));
+      renderCurrentAdminSection();
+      // Mobile: tutup sidebar setelah pilih menu
+      if(window.innerWidth <= 720) closeSidebar();
+    }
+
+    function renderCurrentAdminSection(){
+      if(currentMenu === "athletes") renderAthletesSection();
+      else if(currentMenu === "scores") renderScoresSection();
+      else if(currentMenu === "config") renderConfigSection();
+      // export tidak butuh render dinamis
+    }
+
+    function openSidebar(){
+      el("sidebar").classList.add("open");
+      el("sidebarBackdrop").classList.add("show");
+    }
+    function closeSidebar(){
+      el("sidebar").classList.remove("open");
+      el("sidebarBackdrop").classList.remove("show");
     }
 
     /* ============================================================
-     * AUTH FLOW
+     * AUTH & VIEW SWITCH
      * ============================================================ */
-    async function handleLogin(){
-      const pw = await showLogin();
-      if(pw === null) return; // user batal
+    function switchToAdmin(){
+      el("publicWrap").classList.add("hidden");
+      el("adminShell").classList.add("active");
+      window.scrollTo({top:0});
+    }
+    function switchToPublic(){
+      el("adminShell").classList.remove("active");
+      el("publicWrap").classList.remove("hidden");
+      closeSidebar();
+      window.scrollTo({top:0});
+    }
 
+    async function tryLogin(){
+      const pw = await showLogin();
+      if(pw === null) return false;
       setLoading(true);
       try{
         const res = await apiPost({ action:"verifyPassword", password: pw });
         if(res.ok){
           adminAuthed = true;
           adminPw = pw;
-          toast("Login berhasil. Selamat bekerja.");
-          renderAdmin();
+          toast("Login berhasil.", "success");
+          switchToAdmin();
+          await fetchAll();
+          setActiveMenu("athletes");
+          return true;
         }else{
-          toast("Password salah. Coba lagi.", true);
+          toast("Password salah.", "error");
+          return false;
         }
       }catch(err){
-        toast("Tidak bisa menghubungi server: " + err.message, true);
+        toast("Tidak bisa menghubungi server: " + err.message, "error");
+        return false;
       }finally{
         setLoading(false);
       }
@@ -1441,82 +1706,63 @@
     function handleLogout(){
       adminAuthed = false;
       adminPw = "";
+      switchToPublic();
       toast("Sesi admin diakhiri.");
-      renderAdmin();
     }
 
     /* ============================================================
-     * NAVIGASI TAB & EVENTS
+     * EVENT WIRING
      * ============================================================ */
-    function openView(viewName){
-      // Tab admin butuh login
-      if(viewName === "admin" && !adminAuthed){
-        document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.view === "admin"));
-        el("publicView").classList.remove("active");
-        el("adminView").classList.add("active");
-        renderAdmin(); // tampilkan locked-notice
-        handleLogin(); // langsung tawarkan login modal
-        return;
-      }
-
-      document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.view === viewName));
-      el("publicView").classList.toggle("active", viewName === "public");
-      el("adminView").classList.toggle("active", viewName === "admin");
-      if(viewName === "admin") renderAdmin();
-      window.scrollTo({top:0, behavior:"smooth"});
-    }
-
-    document.querySelectorAll(".tab").forEach(tab => {
-      tab.addEventListener("click", () => openView(tab.dataset.view));
+    el("adminLink").addEventListener("click", async (ev) => {
+      ev.preventDefault();
+      await tryLogin();
     });
 
-    el("btnGoAdmin").addEventListener("click", () => openView("admin"));
-    el("sortOrder").addEventListener("change", renderAll);
-    el("searchInput").addEventListener("input", renderPublicTable);
-    el("btnRefresh").addEventListener("click", fetchAthletes);
-
-    el("btnExportCsv").addEventListener("click", () => {
-      const rows = [
-        ["Rank","Nama Atlet","Kategori","Sekolah","Kontingen","Nilai 1","Nilai 2","Nilai 3","Nilai 4","Total"],
-        ...[...athletes].sort((a,b) => {
-          const order = el("sortOrder")?.value || "desc";
-          return order === "asc" ? totalOf(a) - totalOf(b) : totalOf(b) - totalOf(a);
-        }).map((item, i) => [
-          i+1, item.name, item.gender, item.school, item.district,
-          fmt(item.score1), fmt(item.score2), fmt(item.score3), fmt(item.score4), fmt(totalOf(item))
-        ])
-      ];
-
-      const csv = rows.map(row => row.map(value => `"${String(value).replaceAll('"','""')}"`).join(",")).join("\n");
-      const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "rekap-nilai-o2sn-senam.csv";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      toast("CSV berhasil dibuat.");
+    $$(".menu-item").forEach(btn => {
+      btn.addEventListener("click", () => setActiveMenu(btn.dataset.menu));
     });
 
-    // Auto-refresh data publik tiap 30 detik (hanya saat tab publik aktif)
+    el("btnLogout").addEventListener("click", handleLogout);
+    el("btnBackPublic").addEventListener("click", switchToPublic);
+    el("sidebarToggle").addEventListener("click", openSidebar);
+    el("sidebarBackdrop").addEventListener("click", closeSidebar);
+
+    // Form atlet
+    el("athleteForm").addEventListener("submit", handleAthleteSubmit);
+    el("athCancelBtn").addEventListener("click", resetAthleteForm);
+    el("athleteSearch").addEventListener("input", renderAthletesSection);
+
+    // Filter & form input nilai
+    el("scoresGenderFilter").addEventListener("change", renderScoresSection);
+    el("scoresStatusFilter").addEventListener("change", renderScoresSection);
+    el("scoresSearch").addEventListener("input", renderScoresSection);
+    el("scoreForm").addEventListener("submit", handleScoreSubmit);
+    el("scoreCancel").addEventListener("click", () => el("scoreOverlay").classList.remove("show"));
+    ["scoreN1","scoreN2","scoreN3","scoreN4"].forEach(id => el(id).addEventListener("input", updateScorePreview));
+
+    // Export & print
+    el("btnExportCsv").addEventListener("click", handleExportCsv);
+    el("btnExportJson").addEventListener("click", handleExportJson);
+    el("btnPrintPublic").addEventListener("click", handlePrintPublic);
+
+    // Konfigurasi
+    el("configForm").addEventListener("submit", handleConfigSubmit);
+    el("passwordForm").addEventListener("submit", handlePasswordSubmit);
+    el("btnResetSeed").addEventListener("click", handleResetSeed);
+
+    // Auto-refresh tiap 30 detik di tampilan publik
     setInterval(() => {
-      if(document.visibilityState === "visible" && el("publicView").classList.contains("active")){
-        fetchAthletes();
-      }
+      if(!adminAuthed && document.visibilityState === "visible") fetchAll();
     }, 30000);
 
-    // Refresh saat tab di-focus lagi setelah lama tidak dibuka
     document.addEventListener("visibilitychange", () => {
-      if(document.visibilityState === "visible") fetchAthletes();
+      if(document.visibilityState === "visible") fetchAll();
     });
 
     /* ============================================================
      * BOOT
      * ============================================================ */
-    renderAdmin(); // initial state admin = locked-notice
-    fetchAthletes();
+    fetchAll();
   </script>
 </body>
 </html>
