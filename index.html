@@ -814,8 +814,7 @@
                   <th>Atlet</th>
                   <th>Kategori</th>
                   <th>Sekolah</th>
-                  <th>N1</th><th>N2</th><th>N3</th><th>N4</th>
-                  <th>Total</th>
+                  <th>Nilai Akhir</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -969,16 +968,9 @@
       <p id="scoreModalSubtitle">—</p>
       <form id="scoreForm">
         <input type="hidden" id="scoreAthleteId" />
-        <div class="two">
-          <div class="field"><label>Nilai 1</label><input id="scoreN1" type="number" step="0.001" min="0" max="20" required placeholder="0.000" /></div>
-          <div class="field"><label>Nilai 2</label><input id="scoreN2" type="number" step="0.001" min="0" max="20" required placeholder="0.000" /></div>
-        </div>
-        <div class="two" style="margin-top:10px">
-          <div class="field"><label>Nilai 3</label><input id="scoreN3" type="number" step="0.001" min="0" max="20" required placeholder="0.000" /></div>
-          <div class="field"><label>Nilai 4</label><input id="scoreN4" type="number" step="0.001" min="0" max="20" required placeholder="0.000" /></div>
-        </div>
-        <div class="admin-note" style="margin-top:12px">
-          Total: <strong id="scorePreview" style="color:#087a60">0.000</strong> · dihitung otomatis dari empat nilai di atas.
+        <div class="field">
+          <label>Nilai Akhir</label>
+          <input id="scoreN1" type="number" step="0.001" min="0" max="100" required placeholder="0.000" style="font-size:22px;font-weight:800;text-align:center;padding:14px" />
         </div>
         <div class="actions">
           <button class="btn ghost" type="button" id="scoreCancel">Batal</button>
@@ -1011,8 +1003,7 @@
     const el  = (id) => document.getElementById(id);
     const $$  = (sel, root) => Array.from((root || document).querySelectorAll(sel));
     const fmt = (n)  => Number(n || 0).toFixed(3);
-    const totalOf = (it) => Number(it.score1||0)+Number(it.score2||0)+Number(it.score3||0)+Number(it.score4||0);
-    const isScored = (it) => totalOf(it) > 0;
+    const isScored = (it) => Number(it.score || 0) > 0;
     const initials = (name) => name.split(" ").map(w => w[0]).filter(Boolean).join("").slice(0,2).toUpperCase();
     const escapeHtml = (s) => String(s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -1134,7 +1125,7 @@
       const total = athletes.length;
       const putra = athletes.filter(a => a.gender === "Putra").length;
       const putri = athletes.filter(a => a.gender === "Putri").length;
-      const sorted = [...athletes].sort((a,b) => totalOf(b) - totalOf(a));
+      const sorted = [...athletes].sort((a,b) => Number(b.score) - Number(a.score));
       const best = sorted[0];
 
       container.innerHTML = `
@@ -1156,7 +1147,7 @@
           </article>
           <article class="card stat">
             <div class="label">Nilai Tertinggi</div>
-            <div class="value">${best ? fmt(totalOf(best)) : "0.000"}</div>
+            <div class="value">${best ? fmt(best.score) : "0.000"}</div>
             <div class="sub">${best ? escapeHtml(best.name) + " (" + best.gender + ")" : "Belum ada data"}</div>
           </article>
         </div>
@@ -1212,7 +1203,7 @@
               <thead>
                 <tr>
                   <th>No</th><th>Atlet</th><th>Asal Sekolah</th><th>Wilayah</th>
-                  <th>N1</th><th>N2</th><th>N3</th><th>N4</th><th>Total</th>
+                  <th>Nilai Akhir</th>
                 </tr>
               </thead>
               <tbody id="${lc}Body"></tbody>
@@ -1229,7 +1220,7 @@
       return athletes
         .filter(a => a.gender === gender)
         .filter(a => `${a.name} ${a.school} ${a.region} ${a.gender}`.toLowerCase().includes(q))
-        .sort((a,b) => order === "asc" ? totalOf(a) - totalOf(b) : totalOf(b) - totalOf(a));
+        .sort((a,b) => order === "asc" ? Number(a.score) - Number(b.score) : Number(b.score) - Number(a.score));
     }
 
     function rankClass(i){ return i===0?"gold":i===1?"silver":i===2?"bronze":""; }
@@ -1258,11 +1249,7 @@
               <div><strong>${escapeHtml(it.name)}</strong><span>${it.gender}</span></div></div></td>
             <td>${escapeHtml(it.school)}</td>
             <td>${escapeHtml(it.region)}</td>
-            <td class="score ${Number(it.score1)?'':'zero'}">${fmt(it.score1)}</td>
-            <td class="score ${Number(it.score2)?'':'zero'}">${fmt(it.score2)}</td>
-            <td class="score ${Number(it.score3)?'':'zero'}">${fmt(it.score3)}</td>
-            <td class="score ${Number(it.score4)?'':'zero'}">${fmt(it.score4)}</td>
-            <td class="score total">${fmt(totalOf(it))}</td>
+            <td class="score ${Number(it.score)?'':\'zero\'}">${fmt(it.score)}</td>
           </tr>`;
         }).join("");
 
@@ -1276,15 +1263,9 @@
               </div>
               <span class="chip ${it.gender.toLowerCase()}">${it.gender}</span>
             </div>
-            <div class="result-mid">
-              <div class="mini-score"><span>Nilai 1</span><strong>${fmt(it.score1)}</strong></div>
-              <div class="mini-score"><span>Nilai 2</span><strong>${fmt(it.score2)}</strong></div>
-              <div class="mini-score"><span>Nilai 3</span><strong>${fmt(it.score3)}</strong></div>
-              <div class="mini-score"><span>Nilai 4</span><strong>${fmt(it.score4)}</strong></div>
-            </div>
-            <div class="result-total">
+            <div class="result-total" style="margin-top:10px">
               <span class="muted">${escapeHtml(it.region)}</span>
-              <strong class="score total">Total ${fmt(totalOf(it))}</strong>
+              <strong class="score total">Nilai Akhir ${fmt(it.score)}</strong>
             </div>
           </article>`;
         }).join("");
@@ -1451,11 +1432,7 @@
             <div><strong>${escapeHtml(it.name)}</strong><span>${escapeHtml(it.region)}</span></div></div></td>
           <td><span class="chip ${it.gender.toLowerCase()}">${it.gender}</span></td>
           <td>${escapeHtml(it.school)}</td>
-          <td class="score ${Number(it.score1)?'':'zero'}">${fmt(it.score1)}</td>
-          <td class="score ${Number(it.score2)?'':'zero'}">${fmt(it.score2)}</td>
-          <td class="score ${Number(it.score3)?'':'zero'}">${fmt(it.score3)}</td>
-          <td class="score ${Number(it.score4)?'':'zero'}">${fmt(it.score4)}</td>
-          <td class="score total">${fmt(totalOf(it))}</td>
+          <td class="score ${Number(it.score)?'':\'zero\'}">${fmt(it.score)}</td>
           <td><button class="btn small primary" data-act="score" data-id="${it.id}">📝 Input</button></td>
         </tr>`;
       }).join("");
@@ -1468,14 +1445,8 @@
               <div><strong>${escapeHtml(it.name)}</strong><span>${escapeHtml(it.school)}</span></div></div>
             <span class="chip ${it.gender.toLowerCase()}">${it.gender}</span>
           </div>
-          <div class="result-mid">
-            <div class="mini-score"><span>N1</span><strong>${fmt(it.score1)}</strong></div>
-            <div class="mini-score"><span>N2</span><strong>${fmt(it.score2)}</strong></div>
-            <div class="mini-score"><span>N3</span><strong>${fmt(it.score3)}</strong></div>
-            <div class="mini-score"><span>N4</span><strong>${fmt(it.score4)}</strong></div>
-          </div>
-          <div class="result-total">
-            <strong class="score total">Total ${fmt(totalOf(it))}</strong>
+          <div class="result-total" style="margin-top:10px">
+            <strong class="score total">Nilai Akhir ${fmt(it.score)}</strong>
             <button class="btn small primary" data-act="score" data-id="${it.id}">📝 Input Nilai</button>
           </div>
         </article>`;
@@ -1489,19 +1460,9 @@
       if(!it) return;
       el("scoreAthleteId").value = it.id;
       el("scoreModalSubtitle").innerHTML = `<strong>${escapeHtml(it.name)}</strong> · ${it.gender} · ${escapeHtml(it.school)} (${escapeHtml(it.region)})`;
-      el("scoreN1").value = it.score1 || "";
-      el("scoreN2").value = it.score2 || "";
-      el("scoreN3").value = it.score3 || "";
-      el("scoreN4").value = it.score4 || "";
-      updateScorePreview();
+      el("scoreN1").value = it.score || "";
       el("scoreOverlay").classList.add("show");
       setTimeout(() => el("scoreN1").focus(), 100);
-    }
-
-    function updateScorePreview(){
-      const total = ["scoreN1","scoreN2","scoreN3","scoreN4"]
-        .reduce((s,id) => s + Number(el(id).value || 0), 0);
-      el("scorePreview").textContent = total.toFixed(3);
     }
 
     async function handleScoreSubmit(ev){
@@ -1510,10 +1471,7 @@
         action: "updateScores",
         password: adminPw,
         id: el("scoreAthleteId").value,
-        score1: Number(el("scoreN1").value || 0),
-        score2: Number(el("scoreN2").value || 0),
-        score3: Number(el("scoreN3").value || 0),
-        score4: Number(el("scoreN4").value || 0)
+        score: Number(el("scoreN1").value || 0)
       };
       setLoading(true);
       try{
@@ -1542,12 +1500,11 @@
     }
 
     function handleExportCsv(){
-      const sorted = [...athletes].sort((a,b) => totalOf(b) - totalOf(a));
+      const sorted = [...athletes].sort((a,b) => Number(b.score) - Number(a.score));
       const rows = [
-        ["Rank","Nama Atlet","Kategori","Asal Sekolah","Wilayah","Nilai 1","Nilai 2","Nilai 3","Nilai 4","Total"],
+        ["Rank","Nama Atlet","Kategori","Asal Sekolah","Wilayah","Nilai Akhir"],
         ...sorted.map((it, i) => [
-          i+1, it.name, it.gender, it.school, it.region,
-          fmt(it.score1), fmt(it.score2), fmt(it.score3), fmt(it.score4), fmt(totalOf(it))
+          i+1, it.name, it.gender, it.school, it.region, fmt(it.score)
         ])
       ];
       const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
@@ -1738,7 +1695,7 @@
     el("scoresSearch").addEventListener("input", renderScoresSection);
     el("scoreForm").addEventListener("submit", handleScoreSubmit);
     el("scoreCancel").addEventListener("click", () => el("scoreOverlay").classList.remove("show"));
-    ["scoreN1","scoreN2","scoreN3","scoreN4"].forEach(id => el(id).addEventListener("input", updateScorePreview));
+    // nilai akhir tunggal — tidak ada preview terpisah
 
     // Export & print
     el("btnExportCsv").addEventListener("click", handleExportCsv);
